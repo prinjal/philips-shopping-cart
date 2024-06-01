@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(
+        name = "ITEM"
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -11,6 +14,14 @@ import lombok.*;
 @EqualsAndHashCode
 public class Item {
     @Id
+    @SequenceGenerator(
+            name = "item_id_seq",
+            sequenceName = "item_id_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            generator = "item_id_seq"
+    )
     private Long id;
 
     @ManyToOne
@@ -27,7 +38,7 @@ public class Item {
     private int quantity;
 
     @ManyToOne()
-    @JoinColumn(name = "shopping_cart_id")
+    @JoinColumn(name = "shopping_cart_id",nullable = false)
     private ShoppingCart shoppingCart;
 
 }
