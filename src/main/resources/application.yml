@@ -8,14 +8,14 @@ spring:
   flyway:
     enabled: false
     baseline-on-migrate: true
-#  jpa:
-#    hibernate:
-#      ddl-auto: validate
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        format_sql: true
-#    show-sql: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
 #springdoc:
 #  api-docs:
 #    enabled: true
