@@ -1,4 +1,6 @@
 package com.philips.shoppingcart.service.item.impl;
 
-public class ItemServiceImpl {
+import com.philips.shoppingcart.service.item.ItemService;
+
+public class ItemServiceImpl implements ItemService {
 }

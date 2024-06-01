@@ -28,7 +28,8 @@ public class Product {
     )
     private String name;
     @Column(
-            nullable = false
+            nullable = false,
+            unique = true
     )
     private double price;
 }
