@@ -15,7 +15,7 @@ public class ShoppingCartJdbcDataAccessImpl implements ShoppingCartDao {
     }
 
     @Override
-    public Item addItemToCart(Long cartId, Item item) {
+    public ShoppingCart addItemToCart(Long cartId, Item item) {
         return null;
     }
 

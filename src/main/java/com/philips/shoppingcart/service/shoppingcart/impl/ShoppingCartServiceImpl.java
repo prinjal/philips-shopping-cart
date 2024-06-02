@@ -15,18 +15,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Item addItemToCart(Long cartId, Item item) {
+    public ShoppingCart addItemToCart(Long cartId, Item item) {
         return null;
     }
 
     @Override
-    public Item updateItemInCart(Long cartId, Long itemId, Item item) {
+    public ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item) {
         return null;
     }
 
     @Override
-    public void removeItemFromCart(Long cartId, Long itemId) {
-
+    public ShoppingCart removeItemFromCart(Long cartId, Long itemId) {
+        return null;
     }
 
     @Override
@@ -35,7 +35,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void updateCartTotals(ShoppingCart shoppingCart) {
+    public ShoppingCart updateCartTotals(ShoppingCart shoppingCart) {
 
+        return null;
     }
 }
