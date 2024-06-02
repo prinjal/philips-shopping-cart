@@ -43,7 +43,7 @@ class ShoppingCartDaoTest {
         Long cartId = 1L;
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
-        when(testShoppingCartJpaRepository.findById(Math.toIntExact(cartId))).thenReturn(Optional.of(cart));
+        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
 
         // When
         Optional<ShoppingCart> retrievedCart = Optional.ofNullable(testShoppingCartJpaDataAccess.getShoppingCartById(cartId));
@@ -51,7 +51,7 @@ class ShoppingCartDaoTest {
         // Then
         assertThat(retrievedCart).isPresent();
         assertThat(retrievedCart.get().getId()).isEqualTo(cartId);
-        verify(testShoppingCartJpaRepository, times(1)).findById(Math.toIntExact(cartId));
+        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
     }
 
     @Test
@@ -61,7 +61,7 @@ class ShoppingCartDaoTest {
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
         Item item = new Item();
-        when(testShoppingCartJpaRepository.findById(Math.toIntExact(cartId))).thenReturn(Optional.of(cart));
+        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
         when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
         // When
@@ -70,7 +70,7 @@ class ShoppingCartDaoTest {
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).contains(item);
-        verify(testShoppingCartJpaRepository, times(1)).findById(Math.toIntExact(cartId));
+        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
         verify(testShoppingCartJpaRepository, times(1)).save(cart);
     }
 
@@ -83,7 +83,7 @@ class ShoppingCartDaoTest {
         Item item = new Item();
         item.setId(1L);
         cart.getItems().add(item);
-        when(testShoppingCartJpaRepository.findById(Math.toIntExact(cartId))).thenReturn(Optional.of(cart));
+        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
         when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
         // When
@@ -92,7 +92,7 @@ class ShoppingCartDaoTest {
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).contains(item);
-        verify(testShoppingCartJpaRepository, times(1)).findById(Math.toIntExact(cartId));
+        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
         verify(testShoppingCartJpaRepository, times(1)).save(cart);
     }
 
@@ -105,7 +105,7 @@ class ShoppingCartDaoTest {
         Item item = new Item();
         item.setId(1L);
         cart.getItems().add(item);
-        when(testShoppingCartJpaRepository.findById(Math.toIntExact(cartId))).thenReturn(Optional.of(cart));
+        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
         when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
         // When
@@ -114,7 +114,7 @@ class ShoppingCartDaoTest {
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).doesNotContain(item);
-        verify(testShoppingCartJpaRepository, times(1)).findById(Math.toIntExact(cartId));
+        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
         verify(testShoppingCartJpaRepository, times(1)).save(cart);
     }
 
@@ -129,7 +129,7 @@ class ShoppingCartDaoTest {
         Item item2 = new Item();
         item2.setId(2L);
         cart.getItems().addAll(Arrays.asList(item1, item2));
-        when(testShoppingCartJpaRepository.findById(Math.toIntExact(cartId))).thenReturn(Optional.of(cart));
+        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
 
         // When
         List<Item> retrievedItems = testShoppingCartJpaDataAccess.getAllItemsInCart(cartId);
@@ -137,7 +137,7 @@ class ShoppingCartDaoTest {
         // Then
         assertThat(retrievedItems).hasSize(2);
         assertThat(retrievedItems).containsExactlyInAnyOrder(item1, item2);
-        verify(testShoppingCartJpaRepository, times(1)).findById(Math.toIntExact(cartId));
+        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
     }
 
     @Test
@@ -153,7 +153,7 @@ class ShoppingCartDaoTest {
         item2.setQuantity(1);
         item2.setProduct(new Product("Product2", 20.0));
         cart.getItems().addAll(Arrays.asList(item1, item2));
-        when(testShoppingCartJpaRepository.findById(Math.toIntExact(cartId))).thenReturn(Optional.of(cart));
+        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
         when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
         // When
@@ -163,7 +163,7 @@ class ShoppingCartDaoTest {
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getTotalItems()).isEqualTo(3);
         assertThat(updatedCart.getTotalPrice()).isEqualTo(40.0);
-        verify(testShoppingCartJpaRepository, times(1)).findById(Math.toIntExact(cartId));
+        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
         verify(testShoppingCartJpaRepository, times(1)).save(cart);
     }
 }

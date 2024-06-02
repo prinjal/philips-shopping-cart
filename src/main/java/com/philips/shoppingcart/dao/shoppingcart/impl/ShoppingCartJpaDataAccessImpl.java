@@ -3,6 +3,7 @@ package com.philips.shoppingcart.dao.shoppingcart.impl;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.ShoppingCart;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Component("ShoppingCartJpaDao")
 @Primary
+@RequiredArgsConstructor
 public class ShoppingCartJpaDataAccessImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart getShoppingCartById(Long id) {

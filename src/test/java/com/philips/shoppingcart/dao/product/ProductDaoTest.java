@@ -27,7 +27,7 @@ class ProductDaoTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        this.testProductJpaDataAccess = new ProductJpaDataAccessImpl();
+        this.testProductJpaDataAccess = new ProductJpaDataAccessImpl(testProductJpaRepository);
     }
 
     @AfterEach
@@ -58,15 +58,15 @@ class ProductDaoTest {
         Long productId = 1L;
         Product product = new Product("Product", 10.0);
         product.setId(productId);
-        when(testProductJpaRepository.findById(Math.toIntExact(productId))).thenReturn(Optional.of(product));
+        when(testProductJpaRepository.findById(productId)).thenReturn(Optional.of(product));
 
         // When
-        Optional<Product> retrievedProduct = Optional.ofNullable(testProductJpaDataAccess.getProductById(productId));
+        Optional<Product> retrievedProduct = testProductJpaDataAccess.getProductById(productId);
 
         // Then
         assertThat(retrievedProduct).isPresent();
         assertThat(retrievedProduct.get().getId()).isEqualTo(productId);
-        verify(testProductJpaRepository, times(1)).findById(Math.toIntExact(productId));
+        verify(testProductJpaRepository, times(1)).findById(productId);
     }
 
     @Test
@@ -115,13 +115,13 @@ class ProductDaoTest {
     void productExists() {
         // Given
         Long productId = 1L;
-        when(testProductJpaRepository.existsById(Math.toIntExact(productId))).thenReturn(true);
+        when(testProductJpaRepository.existsById(productId)).thenReturn(true);
 
         // When
         boolean exists = testProductJpaDataAccess.productExists(String.valueOf(productId));
 
         // Then
         assertThat(exists).isTrue();
-        verify(testProductJpaRepository, times(1)).existsById(Math.toIntExact(productId));
+        verify(testProductJpaRepository, times(1)).existsById(productId);
     }
 }
