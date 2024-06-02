@@ -1,6 +1,7 @@
 package com.philips.shoppingcart.service.product.impl;
 
 import com.philips.shoppingcart.dao.product.ProductDao;
+import com.philips.shoppingcart.exceptions.ResourceNotFound;
 import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +22,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getProductById(Long id) {
-        return productDao.getProductById(id);
+    public Product getProductById(Long id) {
+        return productDao.getProductById(id).orElseThrow(() -> new ResourceNotFound("Shopping Cart not found"));
     }
 
     @Override
     public Product createProduct(Product product) {
-        return productDao.createProduct(product);
+        return productDao.createOrUpdateProduct(product);
     }
 
     @Override
     public Product updateProduct(Long id, Product product) {
-        return productDao.updateProduct(id,product);
+        Product existingProduct = getProductById(id);
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
+        return productDao.createOrUpdateProduct(existingProduct);  // Save updated product
     }
 
     @Override
     public void deleteProduct(Long id) {
-        productDao.deleteProduct(id);
+        Product existingProduct = getProductById(id);
+        productDao.deleteProduct(existingProduct);
     }
 
     @Override

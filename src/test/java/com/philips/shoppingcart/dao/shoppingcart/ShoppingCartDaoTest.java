@@ -65,7 +65,7 @@ class ShoppingCartDaoTest {
         when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = testShoppingCartJpaDataAccess.addItemToCart(cartId, item);
+        ShoppingCart updatedCart = testShoppingCartJpaDataAccess.saveShoppingCart(cart);
 
         // Then
         assertThat(updatedCart).isEqualTo(cart);
@@ -74,96 +74,5 @@ class ShoppingCartDaoTest {
         verify(testShoppingCartJpaRepository, times(1)).save(cart);
     }
 
-    @Test
-    void updateItemInCart() {
-        // Given
-        Long cartId = 1L;
-        ShoppingCart cart = new ShoppingCart();
-        cart.setId(cartId);
-        Item item = new Item();
-        item.setId(1L);
-        cart.getItems().add(item);
-        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
-        when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
-        // When
-        ShoppingCart updatedCart=testShoppingCartJpaDataAccess.updateItemInCart(cartId, item.getId(),item);
-
-        // Then
-        assertThat(updatedCart).isEqualTo(cart);
-        assertThat(updatedCart.getItems()).contains(item);
-        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
-        verify(testShoppingCartJpaRepository, times(1)).save(cart);
-    }
-
-    @Test
-    void removeItemFromCart() {
-        // Given
-        Long cartId = 1L;
-        ShoppingCart cart = new ShoppingCart();
-        cart.setId(cartId);
-        Item item = new Item();
-        item.setId(1L);
-        cart.getItems().add(item);
-        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
-        when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
-
-        // When
-        ShoppingCart updatedCart = testShoppingCartJpaDataAccess.removeItemFromCart(cartId, item.getId());
-
-        // Then
-        assertThat(updatedCart).isEqualTo(cart);
-        assertThat(updatedCart.getItems()).doesNotContain(item);
-        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
-        verify(testShoppingCartJpaRepository, times(1)).save(cart);
-    }
-
-    @Test
-    void getAllItemsInCart() {
-        // Given
-        Long cartId = 1L;
-        ShoppingCart cart = new ShoppingCart();
-        cart.setId(cartId);
-        Item item1 = new Item();
-        item1.setId(1L);
-        Item item2 = new Item();
-        item2.setId(2L);
-        cart.getItems().addAll(Arrays.asList(item1, item2));
-        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
-
-        // When
-        List<Item> retrievedItems = testShoppingCartJpaDataAccess.getAllItemsInCart(cartId);
-
-        // Then
-        assertThat(retrievedItems).hasSize(2);
-        assertThat(retrievedItems).containsExactlyInAnyOrder(item1, item2);
-        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
-    }
-
-    @Test
-    void updateCartTotals() {
-        // Given
-        Long cartId = 1L;
-        ShoppingCart cart = new ShoppingCart();
-        cart.setId(cartId);
-        Item item1 = new Item();
-        item1.setQuantity(2);
-        item1.setProduct(new Product("Product1", 10.0));
-        Item item2 = new Item();
-        item2.setQuantity(1);
-        item2.setProduct(new Product("Product2", 20.0));
-        cart.getItems().addAll(Arrays.asList(item1, item2));
-        when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
-        when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
-
-        // When
-        ShoppingCart updatedCart = testShoppingCartJpaDataAccess.updateCartTotals(cartId);
-
-        // Then
-        assertThat(updatedCart).isEqualTo(cart);
-        assertThat(updatedCart.getTotalItems()).isEqualTo(3);
-        assertThat(updatedCart.getTotalPrice()).isEqualTo(40.0);
-        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
-        verify(testShoppingCartJpaRepository, times(1)).save(cart);
-    }
 }

@@ -29,34 +29,13 @@ public class ProductJpaDataAccessImpl implements ProductDao {
     }
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createOrUpdateProduct(Product product) {
         return productJpaRepository.save(product);
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
-        Optional<Product> optionalProduct=productJpaRepository.findById(id);
-        if (optionalProduct.isPresent()){
-            Product existingProduct = optionalProduct.get();
-            existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice());
-            return productJpaRepository.save(existingProduct);
-        }
-        else{
-            throw new ResourceNotFound("Product not found");
-        }
-    }
-
-    @Override
-    public void deleteProduct(Long id) {
-        Optional<Product> optionalProduct=productJpaRepository.findById(id);
-        if (optionalProduct.isPresent()){
-            Product existingProduct = optionalProduct.get();
-            productJpaRepository.delete(existingProduct);
-        }
-        else{
-            throw new ResourceNotFound("Product not found");
-        }
+    public void deleteProduct(Product product) {
+        productJpaRepository.delete(product);
     }
 
     @Override

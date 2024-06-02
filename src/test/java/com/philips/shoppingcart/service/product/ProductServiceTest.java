@@ -6,7 +6,6 @@ import com.philips.shoppingcart.service.product.impl.ProductServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -66,7 +65,7 @@ class ProductServiceTest {
         when(productDao.getProductById(productId)).thenReturn(Optional.of(product));
 
         // When
-        Optional<Product> retrievedProduct = productService.getProductById(productId);
+        Product retrievedProduct = productService.getProductById(productId);
 
         // Then
         assertThat(retrievedProduct).isEqualTo(product);
@@ -79,14 +78,14 @@ class ProductServiceTest {
         Product product = new Product();
         product.setName("New Product");
         product.setPrice(10.0);
-        when(productDao.createProduct(product)).thenReturn(product);
+        when(productDao.createOrUpdateProduct(product)).thenReturn(product);
 
         // When
         Product createdProduct = productService.createProduct(product);
 
         // Then
         assertThat(createdProduct).isEqualTo(product);
-        verify(productDao, times(1)).createProduct(product);
+        verify(productDao, times(1)).createOrUpdateProduct(product);
     }
 
     @Test
@@ -96,26 +95,28 @@ class ProductServiceTest {
         product.setId(1L);
         product.setName("Updated Product");
         product.setPrice(20.0);
-        when(productDao.updateProduct(product.getId(),product)).thenReturn(product);
+        when(productDao.createOrUpdateProduct(product)).thenReturn(product);
 
         // When
         Product updatedProduct = productService.updateProduct(product.getId(),product);
 
         // Then
         assertThat(updatedProduct).isEqualTo(product);
-        verify(productDao, times(1)).updateProduct(product.getId(),product);
+        verify(productDao, times(1)).createOrUpdateProduct(product);
     }
 
     @Test
     void deleteProduct() {
         // Given
-        Long productId = 1L;
+        Product product = new Product();
+        product.setName("New Product");
+        product.setPrice(10.0);
 
         // When
-        productService.deleteProduct(productId);
+        productService.deleteProduct(product.getId());
 
         // Then
-        verify(productDao, times(1)).deleteProduct(productId);
+        verify(productDao, times(1)).deleteProduct(product);
     }
 
     @Test

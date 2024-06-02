@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShoppingCartService {
-    Optional<ShoppingCart> getShoppingCartById(Long id);
+    ShoppingCart getShoppingCartById(Long id);
 
     ShoppingCart addItemToCart(Long cartId, Item item);
 
