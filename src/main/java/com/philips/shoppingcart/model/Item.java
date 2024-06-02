@@ -2,6 +2,7 @@ package com.philips.shoppingcart.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 @Entity
 @Table(
@@ -22,6 +23,7 @@ public class Item {
     @GeneratedValue(
             generator = "item_id_seq"
     )
+    @ReadOnlyProperty
     private Long id;
 
     @ManyToOne

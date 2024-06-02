@@ -1,6 +1,9 @@
 spring:
   application:
     name: shoppingcart
+  mvc:
+    servlet:
+      path: /api/v1
   datasource:
     url: jdbc:postgresql://localhost:5432/philips
     username: postgres
@@ -16,8 +19,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
-#springdoc:
-#  api-docs:
-#    enabled: true
-#    path: /api-docs
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    path: ""
 

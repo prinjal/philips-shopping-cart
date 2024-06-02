@@ -4,12 +4,14 @@ import com.philips.shoppingcart.dao.item.ItemDao;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.service.item.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Primary
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
