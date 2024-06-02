@@ -2,11 +2,13 @@ package com.philips.shoppingcart.dao.product.impl;
 
 import com.philips.shoppingcart.dao.product.ProductDao;
 import com.philips.shoppingcart.model.Product;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component("ProductJpaDao")
+@Primary
 public class ProductJpaDataAccessImpl implements ProductDao {
 
     @Override

@@ -12,21 +12,21 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase
 class ProductJpaInterfaceTest {
 
-    private static ProductJpaInterface productJpaInterface;
+    private static ProductJpaRepository testProductJpaRepository;
 
     @BeforeAll
     public static void setup(){
-        productJpaInterface.deleteAll();
+        testProductJpaRepository.deleteAll();
     }
 
     @Test
     void existsProductById() {
         // Given
         Product product = new Product("Test", 10.0);
-        product = productJpaInterface.save(product);
+        product = testProductJpaRepository.save(product);
 
         // When
-        boolean exists = productJpaInterface.existsProductById(product.getId());
+        boolean exists = testProductJpaRepository.existsProductById(product.getId());
 
         // Then
         assertThat(exists).isTrue();

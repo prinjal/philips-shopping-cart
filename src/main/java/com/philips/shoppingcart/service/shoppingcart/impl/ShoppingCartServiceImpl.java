@@ -3,9 +3,11 @@ package com.philips.shoppingcart.service.shoppingcart.impl;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.ShoppingCart;
 import com.philips.shoppingcart.service.shoppingcart.ShoppingCartService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getShoppingCartById(Long id) {
