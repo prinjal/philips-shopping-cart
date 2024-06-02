@@ -3,11 +3,13 @@ package com.philips.shoppingcart.dao.shoppingcart.impl;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.ShoppingCart;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component("ShoppingCartJpaDao")
+@Primary
 public class ShoppingCartJpaDataAccessImpl implements ShoppingCartDao {
     @Override
     public ShoppingCart getShoppingCartById(Long id) {
@@ -20,13 +22,14 @@ public class ShoppingCartJpaDataAccessImpl implements ShoppingCartDao {
     }
 
     @Override
-    public Item updateItemInCart(Long cartId, Long itemId, Item item) {
+    public ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item) {
         return null;
     }
 
     @Override
-    public void removeItemFromCart(Long cartId, Long itemId) {
+    public ShoppingCart removeItemFromCart(Long cartId, Long itemId) {
 
+        return null;
     }
 
     @Override
@@ -35,7 +38,8 @@ public class ShoppingCartJpaDataAccessImpl implements ShoppingCartDao {
     }
 
     @Override
-    public void updateCartTotals(ShoppingCart shoppingCart) {
+    public ShoppingCart updateCartTotals(Long shoppingCart) {
 
+        return null;
     }
 }

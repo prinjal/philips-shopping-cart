@@ -20,13 +20,14 @@ public class ShoppingCartJdbcDataAccessImpl implements ShoppingCartDao {
     }
 
     @Override
-    public Item updateItemInCart(Long cartId, Long itemId, Item item) {
+    public ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item) {
         return null;
     }
 
     @Override
-    public void removeItemFromCart(Long cartId, Long itemId) {
+    public ShoppingCart removeItemFromCart(Long cartId, Long itemId) {
 
+        return null;
     }
 
     @Override
@@ -35,7 +36,8 @@ public class ShoppingCartJdbcDataAccessImpl implements ShoppingCartDao {
     }
 
     @Override
-    public void updateCartTotals(ShoppingCart shoppingCart) {
+    public ShoppingCart updateCartTotals(Long shoppingCart) {
 
+        return null;
     }
 }

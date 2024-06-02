@@ -2,9 +2,11 @@ package com.philips.shoppingcart.service.product.impl;
 
 import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.service.product.ProductService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
