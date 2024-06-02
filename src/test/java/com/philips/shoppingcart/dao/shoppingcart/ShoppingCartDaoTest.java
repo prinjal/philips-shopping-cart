@@ -29,7 +29,7 @@ class ShoppingCartDaoTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        this.testShoppingCartJpaDataAccess = new ShoppingCartJpaDataAccessImpl();
+        this.testShoppingCartJpaDataAccess = new ShoppingCartJpaDataAccessImpl(testShoppingCartJpaRepository);
     }
 
     @AfterEach
@@ -46,7 +46,7 @@ class ShoppingCartDaoTest {
         when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
 
         // When
-        Optional<ShoppingCart> retrievedCart = Optional.ofNullable(testShoppingCartJpaDataAccess.getShoppingCartById(cartId));
+        Optional<ShoppingCart> retrievedCart = testShoppingCartJpaDataAccess.getShoppingCartById(cartId);
 
         // Then
         assertThat(retrievedCart).isPresent();

@@ -46,7 +46,7 @@ class ShoppingCartServiceTest {
         Long cartId = 1L;
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
-        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(cart);
+        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
 
         // When
         ShoppingCart retrievedCart = shoppingCartService.getShoppingCartById(cartId);

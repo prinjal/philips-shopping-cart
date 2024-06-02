@@ -42,7 +42,7 @@ class ItemDaoTest {
         when(testItemJpaRepository.findById(itemId)).thenReturn(Optional.of(item));
 
         // When
-        Optional<Item> retrievedItem = Optional.ofNullable(testItemJpaDataAccess.getItemById(itemId));
+        Optional<Item> retrievedItem = testItemJpaDataAccess.getItemById(itemId);
 
         // Then
         assertThat(retrievedItem).isPresent();

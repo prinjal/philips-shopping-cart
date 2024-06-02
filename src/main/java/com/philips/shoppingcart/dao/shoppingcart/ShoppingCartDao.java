@@ -4,9 +4,10 @@ import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.ShoppingCart;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ShoppingCartDao {
-    ShoppingCart getShoppingCartById(Long id);
+    Optional<ShoppingCart> getShoppingCartById(Long id);
 
     ShoppingCart addItemToCart(Long cartId, Item item);
 
@@ -16,5 +17,5 @@ public interface ShoppingCartDao {
 
     List<Item> getAllItemsInCart(Long cartId);
 
-    ShoppingCart updateCartTotals(Long shoppingCart);
+    ShoppingCart updateCartTotals(Long shoppingCartId);
 }
