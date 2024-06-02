@@ -32,7 +32,7 @@ class ShoppingCartServiceTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        shoppingCartService = new ShoppingCartServiceImpl();  // Manually instantiate and inject mock
+        shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDao);  // Manually instantiate and inject mock
     }
 
     @AfterEach
@@ -49,7 +49,7 @@ class ShoppingCartServiceTest {
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
 
         // When
-        ShoppingCart retrievedCart = shoppingCartService.getShoppingCartById(cartId);
+        Optional<ShoppingCart> retrievedCart = shoppingCartService.getShoppingCartById(cartId);
 
         // Then
         assertThat(retrievedCart).isEqualTo(cart);
@@ -151,7 +151,7 @@ class ShoppingCartServiceTest {
         when(shoppingCartDao.updateCartTotals(cartId)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = shoppingCartService.updateCartTotals(cart);
+        ShoppingCart updatedCart = shoppingCartService.updateCartTotals(cart.getId());
 
         // Then
         assertThat(updatedCart).isEqualTo(cart);

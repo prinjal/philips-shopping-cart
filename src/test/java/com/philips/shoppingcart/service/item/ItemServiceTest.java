@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -28,7 +29,7 @@ class ItemServiceTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        itemService = new ItemServiceImpl();
+        itemService = new ItemServiceImpl(itemDao);
     }
 
     @AfterEach
@@ -45,7 +46,7 @@ class ItemServiceTest {
         when(itemDao.getItemById(itemId)).thenReturn(item);
 
         // When
-        Item retrievedItem = itemService.getItemById(itemId);
+        Optional<Item> retrievedItem = itemService.getItemById(itemId);
 
         // Then
         assertThat(retrievedItem).isEqualTo(item);

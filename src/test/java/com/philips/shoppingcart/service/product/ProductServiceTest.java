@@ -30,7 +30,7 @@ class ProductServiceTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        productService = new ProductServiceImpl();
+        productService = new ProductServiceImpl(productDao);
     }
 
     @AfterEach
@@ -66,7 +66,7 @@ class ProductServiceTest {
         when(productDao.getProductById(productId)).thenReturn(Optional.of(product));
 
         // When
-        Product retrievedProduct = productService.getProductById(productId);
+        Optional<Product> retrievedProduct = productService.getProductById(productId);
 
         // Then
         assertThat(retrievedProduct).isEqualTo(product);
