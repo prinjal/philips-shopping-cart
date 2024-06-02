@@ -8,7 +8,7 @@ import java.util.List;
 public interface ShoppingCartDao {
     ShoppingCart getShoppingCartById(Long id);
 
-    Item addItemToCart(Long cartId, Item item);
+    ShoppingCart addItemToCart(Long cartId, Item item);
 
     ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item);
 

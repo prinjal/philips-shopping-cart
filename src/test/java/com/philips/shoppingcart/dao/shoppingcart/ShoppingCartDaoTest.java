@@ -65,7 +65,7 @@ class ShoppingCartDaoTest {
         when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = testShoppingCartJpaDataAccess.addItemToCart(cartId, item).getShoppingCart();
+        ShoppingCart updatedCart = testShoppingCartJpaDataAccess.addItemToCart(cartId, item);
 
         // Then
         assertThat(updatedCart).isEqualTo(cart);

@@ -8,14 +8,14 @@ import java.util.List;
 public interface ShoppingCartService {
     ShoppingCart getShoppingCartById(Long id);
 
-    Item addItemToCart(Long cartId, Item item);
+    ShoppingCart addItemToCart(Long cartId, Item item);
 
-    Item updateItemInCart(Long cartId, Long itemId, Item item);
+    ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item);
 
-    void removeItemFromCart(Long cartId, Long itemId);
+    ShoppingCart removeItemFromCart(Long cartId, Long itemId);
 
     List<Item> getAllItemsInCart(Long cartId);
 
-    void updateCartTotals(ShoppingCart shoppingCart);
+    ShoppingCart updateCartTotals(ShoppingCart shoppingCart);
 
 }
