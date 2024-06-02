@@ -92,7 +92,7 @@ class ProductDaoTest {
         when(testProductJpaRepository.save(product)).thenReturn(product);
 
         // When
-        Product updatedProduct = testProductJpaDataAccess.updateProduct(product);
+        Product updatedProduct = testProductJpaDataAccess.updateProduct(productId,product);
 
         // Then
         assertThat(updatedProduct).isEqualTo(product);
