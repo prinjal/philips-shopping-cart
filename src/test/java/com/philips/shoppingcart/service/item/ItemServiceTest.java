@@ -43,7 +43,7 @@ class ItemServiceTest {
         Long itemId = 1L;
         Item item = new Item();
         item.setId(itemId);
-        when(itemDao.getItemById(itemId)).thenReturn(item);
+        when(itemDao.getItemById(itemId)).thenReturn(Optional.of(item));
 
         // When
         Optional<Item> retrievedItem = itemService.getItemById(itemId);

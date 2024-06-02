@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shopping-carts")
-public class ShoppingCartController extends AbstractRestController{
+public class ShoppingCartController {
     @GetMapping("/{id}")
     public ResponseEntity<ShoppingCart> getShoppingCartById(@PathVariable Long id) {
         return  null;

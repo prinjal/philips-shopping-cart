@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController extends AbstractRestController{
+public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return null;
