@@ -32,7 +32,9 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
 
+    @ReadOnlyProperty
     private double totalPrice;
 
+    @ReadOnlyProperty
     private int totalItems;
 }
