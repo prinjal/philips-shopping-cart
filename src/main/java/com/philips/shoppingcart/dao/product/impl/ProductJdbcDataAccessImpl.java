@@ -5,6 +5,7 @@ import com.philips.shoppingcart.model.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component("ProductJdbcDao")
 public class ProductJdbcDataAccessImpl implements ProductDao {
@@ -14,7 +15,7 @@ public class ProductJdbcDataAccessImpl implements ProductDao {
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public Optional<Product> getProductById(Long id) {
         return null;
     }
 

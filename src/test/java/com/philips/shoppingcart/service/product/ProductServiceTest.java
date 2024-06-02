@@ -63,7 +63,7 @@ class ProductServiceTest {
         Long productId = 1L;
         Product product = new Product();
         product.setId(productId);
-        when(productDao.getProductById(productId)).thenReturn(product);
+        when(productDao.getProductById(productId)).thenReturn(Optional.of(product));
 
         // When
         Product retrievedProduct = productService.getProductById(productId);

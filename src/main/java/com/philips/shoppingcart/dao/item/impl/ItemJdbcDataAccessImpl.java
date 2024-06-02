@@ -5,11 +5,12 @@ import com.philips.shoppingcart.model.Item;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component("ItemJdbcDao")
 public class ItemJdbcDataAccessImpl implements ItemDao {
     @Override
-    public Item getItemById(Long id) {
+    public Optional<Item> getItemById(Long id) {
         return null;
     }
 

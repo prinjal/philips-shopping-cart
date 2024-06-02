@@ -25,7 +25,7 @@ class ItemDaoTest {
     @BeforeEach
     void setUp() {
         autoCloseable= MockitoAnnotations.openMocks(this);
-        this.testItemJpaDataAccess=new ItemJpaDataAccessImpl();
+        this.testItemJpaDataAccess=new ItemJpaDataAccessImpl(testItemJpaRepository);
     }
 
     @AfterEach
@@ -39,15 +39,15 @@ class ItemDaoTest {
         Long itemId = 1L;
         Item item = new Item();
         item.setId(itemId);
-        when(testItemJpaRepository.findById(Math.toIntExact(itemId))).thenReturn(Optional.of(item));
+        when(testItemJpaRepository.findById(itemId)).thenReturn(Optional.of(item));
 
         // When
-        Optional<Item> retrievedItem = Optional.ofNullable(testItemJpaDataAccess.getItemById(itemId));
+        Optional<Item> retrievedItem = testItemJpaDataAccess.getItemById(itemId);
 
         // Then
         assertThat(retrievedItem).isPresent();
         assertThat(retrievedItem.get().getId()).isEqualTo(itemId);
-        verify(testItemJpaRepository, times(1)).findById(Math.toIntExact(itemId));
+        verify(testItemJpaRepository, times(1)).findById(itemId);
     }
 
     @Test

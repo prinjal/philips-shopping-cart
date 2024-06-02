@@ -26,7 +26,7 @@ class ProductJpaInterfaceTest {
         product = testProductJpaRepository.save(product);
 
         // When
-        boolean exists = testProductJpaRepository.existsProductById(product.getId());
+        boolean exists = testProductJpaRepository.existsProductByName(product.getName());
 
         // Then
         assertThat(exists).isTrue();
