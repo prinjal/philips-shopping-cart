@@ -8,9 +8,8 @@ import java.util.Optional;
 public interface ProductDao {
     List<Product> getAllProducts();
     Optional<Product> getProductById(Long id);
-    Product createProduct(Product product);
-    Product updateProduct(Long id, Product product);
-    void deleteProduct(Long id);
+    Product createOrUpdateProduct(Product product);
+    void deleteProduct(Product product);
 
     boolean productExists(String name);
 }

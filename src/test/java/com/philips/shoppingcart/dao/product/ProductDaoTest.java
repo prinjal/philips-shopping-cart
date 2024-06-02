@@ -76,36 +76,26 @@ class ProductDaoTest {
         when(testProductJpaRepository.save(product)).thenReturn(product);
 
         // When
-        Product createdProduct = testProductJpaDataAccess.createProduct(product);
+        Product createdProduct = testProductJpaDataAccess.createOrUpdateProduct(product);
 
         // Then
         assertThat(createdProduct).isEqualTo(product);
         verify(testProductJpaRepository, times(1)).save(product);
     }
 
-    @Test
-    void updateProduct() {
-        // Given
-        Long productId = 1L;
-        Product product = new Product("Product", 10.0);
-        product.setId(productId);
-        when(testProductJpaRepository.save(product)).thenReturn(product);
-
-        // When
-        Product updatedProduct = testProductJpaDataAccess.updateProduct(productId,product);
-
-        // Then
-        assertThat(updatedProduct).isEqualTo(product);
-        verify(testProductJpaRepository, times(1)).save(product);
-    }
 
     @Test
     void deleteProduct() {
         // Given
         Long productId = 1L;
+        Product product = new Product(
+                productId,
+                "Test",
+                10.0
+        );
 
         // When
-        testProductJpaDataAccess.deleteProduct(productId);
+        testProductJpaDataAccess.deleteProduct(product);
 
         // Then
         verify(testProductJpaRepository, times(1)).deleteById(productId);

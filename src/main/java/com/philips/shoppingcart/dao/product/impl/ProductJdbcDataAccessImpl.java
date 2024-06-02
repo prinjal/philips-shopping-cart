@@ -20,17 +20,13 @@ public class ProductJdbcDataAccessImpl implements ProductDao {
     }
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createOrUpdateProduct(Product product) {
         return null;
     }
 
-    @Override
-    public Product updateProduct(Long id, Product product) {
-        return null;
-    }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProduct(Product product) {
 
     }
 

@@ -49,7 +49,7 @@ class ShoppingCartServiceTest {
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
 
         // When
-        Optional<ShoppingCart> retrievedCart = shoppingCartService.getShoppingCartById(cartId);
+        ShoppingCart retrievedCart = shoppingCartService.getShoppingCartById(cartId);
 
         // Then
         assertThat(retrievedCart).isEqualTo(cart);
@@ -64,7 +64,7 @@ class ShoppingCartServiceTest {
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
         cart.getItems().add(item);
-        when(shoppingCartDao.addItemToCart(cartId, item)).thenReturn(cart);
+        when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
         ShoppingCart updatedCart = shoppingCartService.addItemToCart(cartId, item);
@@ -72,7 +72,8 @@ class ShoppingCartServiceTest {
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).contains(item);
-        verify(shoppingCartDao, times(1)).addItemToCart(cartId, item);
+        verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
+        verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
 
     @Test
@@ -83,7 +84,7 @@ class ShoppingCartServiceTest {
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
         cart.getItems().add(item);
-        when(shoppingCartDao.updateItemInCart(cartId, item.getId(), item)).thenReturn(cart);
+        when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
         ShoppingCart updatedCart = shoppingCartService.updateItemInCart(cartId,item.getId(), item);
@@ -91,7 +92,8 @@ class ShoppingCartServiceTest {
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).contains(item);
-        verify(shoppingCartDao, times(1)).updateItemInCart(cartId,item.getId(), item);
+        verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
+        verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
 
     @Test
@@ -104,7 +106,7 @@ class ShoppingCartServiceTest {
         Item item = new Item();
         item.setId(itemId);
         cart.getItems().add(item);
-        when(shoppingCartDao.removeItemFromCart(cartId, itemId)).thenReturn(cart);
+        when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
         ShoppingCart updatedCart = shoppingCartService.removeItemFromCart(cartId, itemId);
@@ -112,19 +114,23 @@ class ShoppingCartServiceTest {
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).doesNotContain(item);
-        verify(shoppingCartDao, times(1)).removeItemFromCart(cartId, itemId);
+        verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
+        verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
 
     @Test
     void getAllItemsInCart() {
         // Given
         Long cartId = 1L;
+        ShoppingCart cart = new ShoppingCart();
+        cart.setId(cartId);
         Item item1 = new Item();
         item1.setId(1L);
         Item item2 = new Item();
         item2.setId(2L);
-        List<Item> items = Arrays.asList(item1, item2);
-        when(shoppingCartDao.getAllItemsInCart(cartId)).thenReturn(items);
+        cart.getItems().add(item1);
+        cart.getItems().add(item2);
+        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
 
         // When
         List<Item> retrievedItems = shoppingCartService.getAllItemsInCart(cartId);
@@ -132,7 +138,7 @@ class ShoppingCartServiceTest {
         // Then
         assertThat(retrievedItems).hasSize(2);
         assertThat(retrievedItems).containsExactlyInAnyOrder(item1, item2);
-        verify(shoppingCartDao, times(1)).getAllItemsInCart(cartId);
+        verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
     }
 
     @Test
@@ -148,15 +154,17 @@ class ShoppingCartServiceTest {
         item2.setQuantity(1);
         item2.setProduct(new Product("Product2", 20.0));
         cart.getItems().addAll(Arrays.asList(item1, item2));
-        when(shoppingCartDao.updateCartTotals(cartId)).thenReturn(cart);
+        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
+        when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = shoppingCartService.updateCartTotals(cart.getId());
+        ShoppingCart updatedCart = shoppingCartService.updateCartTotals(cartId);
 
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getTotalItems()).isEqualTo(3);
         assertThat(updatedCart.getTotalPrice()).isEqualTo(40.0);
-        verify(shoppingCartDao, times(1)).updateCartTotals(cartId);
+        verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
+        verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
 }
