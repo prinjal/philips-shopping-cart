@@ -30,6 +30,7 @@ class ItemServiceTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
+        itemService = new ItemServiceImpl();
     }
 
     @AfterEach
