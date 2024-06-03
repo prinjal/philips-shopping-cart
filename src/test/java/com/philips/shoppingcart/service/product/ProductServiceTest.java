@@ -1,6 +1,8 @@
 package com.philips.shoppingcart.service.product;
 
 import com.philips.shoppingcart.dao.product.ProductDao;
+import com.philips.shoppingcart.dto.product.RequestProductDto;
+import com.philips.shoppingcart.dto.product.ResponseProductDto;
 import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.service.product.impl.ProductServiceImpl;
 import org.junit.jupiter.api.AfterEach;
@@ -48,7 +50,7 @@ class ProductServiceTest {
         when(productDao.getAllProducts()).thenReturn(products);
 
         // When
-        List<Product> retrievedProducts = productService.getAllProducts();
+        List<ResponseProductDto> retrievedProducts = productService.getAllProducts();
 
         // Then
         assertThat(retrievedProducts).hasSize(2);
@@ -65,7 +67,7 @@ class ProductServiceTest {
         when(productDao.getProductById(productId)).thenReturn(Optional.of(product));
 
         // When
-        Product retrievedProduct = productService.getProductById(productId);
+        ResponseProductDto retrievedProduct = productService.getProductById(productId);
 
         // Then
         assertThat(retrievedProduct).isEqualTo(product);
@@ -81,7 +83,8 @@ class ProductServiceTest {
         when(productDao.createOrUpdateProduct(product)).thenReturn(product);
 
         // When
-        Product createdProduct = productService.createProduct(product);
+        ResponseProductDto createdProduct = productService.createProduct(new RequestProductDto(product.getName()
+                , product.getPrice()));
 
         // Then
         assertThat(createdProduct).isEqualTo(product);
@@ -98,7 +101,8 @@ class ProductServiceTest {
         when(productDao.createOrUpdateProduct(product)).thenReturn(product);
 
         // When
-        Product updatedProduct = productService.updateProduct(product.getId(),product);
+        ResponseProductDto updatedProduct = productService.updateProduct(product.getId(), new RequestProductDto(product.getName()
+                , product.getPrice()));
 
         // Then
         assertThat(updatedProduct).isEqualTo(product);
@@ -123,7 +127,7 @@ class ProductServiceTest {
     void productExists() {
         // Given
         Long productId = 1L;
-        String productName="Test";
+        String productName = "Test";
         when(productDao.productExists(productName)).thenReturn(true);
 
         // When

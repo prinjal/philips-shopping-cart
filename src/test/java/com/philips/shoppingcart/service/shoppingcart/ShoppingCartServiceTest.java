@@ -1,6 +1,8 @@
 package com.philips.shoppingcart.service.shoppingcart;
 
+import com.philips.shoppingcart.dao.item.ItemDao;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
+import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.model.ShoppingCart;
@@ -24,6 +26,8 @@ class ShoppingCartServiceTest {
 
     @Mock
     private ShoppingCartDao shoppingCartDao;
+    @Mock
+    private ItemDao itemDao;
 
     private ShoppingCartServiceImpl shoppingCartService;
 
@@ -32,7 +36,7 @@ class ShoppingCartServiceTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDao);  // Manually instantiate and inject mock
+        shoppingCartService = new ShoppingCartServiceImpl(shoppingCartDao,itemDao);  // Manually instantiate and inject mock
     }
 
     @AfterEach
@@ -49,10 +53,10 @@ class ShoppingCartServiceTest {
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
 
         // When
-        ShoppingCart retrievedCart = shoppingCartService.getShoppingCartById(cartId);
+        ResponseShoppingCartDto retrievedCart = shoppingCartService.getShoppingCartById(cartId);
 
         // Then
-        assertThat(retrievedCart).isEqualTo(cart);
+        assertThat(retrievedCart.getId()).isEqualTo(cart.getId());
         verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
     }
 
@@ -60,18 +64,21 @@ class ShoppingCartServiceTest {
     void addItemToCart() {
         // Given
         Long cartId = 1L;
+        Long itemId = 1L;
         Item item = new Item();
+        item.setId(itemId);
+        Product product = new Product(1L, "Product", 100.0);
+        item.setProduct(product);
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
-        cart.getItems().add(item);
+        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = shoppingCartService.addItemToCart(cartId, item);
+        ResponseShoppingCartDto updatedCart = shoppingCartService.addItemToCart(cartId, item);
 
         // Then
-        assertThat(updatedCart).isEqualTo(cart);
-        assertThat(updatedCart.getItems()).contains(item);
+        assertThat(updatedCart.getItems()).anyMatch(i -> i.getId().equals(item.getId()));
         verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
         verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
@@ -80,18 +87,25 @@ class ShoppingCartServiceTest {
     void updateItemInCart() {
         // Given
         Long cartId = 1L;
+        Long itemId = 1L;
         Item item = new Item();
+        item.setId(itemId);
+        Product product = new Product(1L, "Product", 100.0);
+        item.setProduct(product);
+        item.setQuantity(5);
+
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
         cart.getItems().add(item);
+
+        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = shoppingCartService.updateItemInCart(cartId,item.getId(), item);
+        ResponseShoppingCartDto updatedCart = shoppingCartService.updateItemInCart(cartId, itemId, item);
 
         // Then
-        assertThat(updatedCart).isEqualTo(cart);
-        assertThat(updatedCart.getItems()).contains(item);
+        assertThat(updatedCart.getItems()).anyMatch(i -> i.getQuantity() == item.getQuantity());
         verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
         verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
@@ -101,19 +115,20 @@ class ShoppingCartServiceTest {
         // Given
         Long cartId = 1L;
         Long itemId = 1L;
-        ShoppingCart cart = new ShoppingCart();
-        cart.setId(cartId);
         Item item = new Item();
         item.setId(itemId);
+        ShoppingCart cart = new ShoppingCart();
+        cart.setId(cartId);
         cart.getItems().add(item);
+
+        when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = shoppingCartService.removeItemFromCart(cartId, itemId);
+        ResponseShoppingCartDto updatedCart = shoppingCartService.removeItemFromCart(cartId, itemId);
 
         // Then
-        assertThat(updatedCart).isEqualTo(cart);
-        assertThat(updatedCart.getItems()).doesNotContain(item);
+        assertThat(updatedCart.getItems()).noneMatch(i -> i.getId().equals(itemId));
         verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
         verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
     }
@@ -149,19 +164,18 @@ class ShoppingCartServiceTest {
         cart.setId(cartId);
         Item item1 = new Item();
         item1.setQuantity(2);
-        item1.setProduct(new Product("Product1", 10.0));
+        item1.setProduct(new Product(1L, "Product1", 10.0));
         Item item2 = new Item();
         item2.setQuantity(1);
-        item2.setProduct(new Product("Product2", 20.0));
+        item2.setProduct(new Product(2L, "Product2", 20.0));
         cart.getItems().addAll(Arrays.asList(item1, item2));
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
         // When
-        ShoppingCart updatedCart = shoppingCartService.updateCartTotals(cartId);
+        ResponseShoppingCartDto updatedCart = shoppingCartService.updateCartTotals(cartId);
 
         // Then
-        assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getTotalItems()).isEqualTo(3);
         assertThat(updatedCart.getTotalPrice()).isEqualTo(40.0);
         verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);

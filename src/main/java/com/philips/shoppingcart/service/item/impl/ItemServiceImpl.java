@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemDao itemDao;
-    private final ProductDao productDao;
 
     @Override
     public Optional<ResponseItemDto> getItemById(Long id) {
