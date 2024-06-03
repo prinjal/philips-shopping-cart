@@ -3,6 +3,7 @@ package com.philips.shoppingcart.service.shoppingcart.impl;
 import com.philips.shoppingcart.dao.item.ItemDao;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
 import com.philips.shoppingcart.dto.item.ResponseItemDto;
+import com.philips.shoppingcart.dto.product.ResponseProductDto;
 import com.philips.shoppingcart.dto.shoppingcart.RequestShoppingCartDto;
 import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
 import com.philips.shoppingcart.exceptions.ResourceNotFound;
@@ -101,7 +102,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private ResponseShoppingCartDto convertToDto(ShoppingCart shoppingCart) {
         List<ResponseItemDto> responseItemDtos = shoppingCart.getItems().stream()
-                .map(item -> new ResponseItemDto(item.getId(),item.getProduct().getId(), item.getQuantity()))
+                .map(item -> new ResponseItemDto(item.getId(), new ResponseProductDto
+                        (item.getProduct().getId(), item.getProduct().getName(), item.getProduct().getPrice())
+                        , item.getQuantity()))
                 .collect(Collectors.toList());
 
         return new ResponseShoppingCartDto(
