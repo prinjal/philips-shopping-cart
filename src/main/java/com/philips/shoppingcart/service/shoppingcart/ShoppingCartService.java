@@ -1,22 +1,25 @@
 package com.philips.shoppingcart.service.shoppingcart;
 
+import com.philips.shoppingcart.dto.item.RequestItemDto;
+import com.philips.shoppingcart.dto.shoppingcart.RequestShoppingCartDto;
+import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
 import com.philips.shoppingcart.model.Item;
-import com.philips.shoppingcart.model.ShoppingCart;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ShoppingCartService {
-    ShoppingCart getShoppingCartById(Long id);
+    ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto);
 
-    ShoppingCart addItemToCart(Long cartId, Item item);
+    ResponseShoppingCartDto getShoppingCartById(Long id);
 
-    ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item);
+    ResponseShoppingCartDto addItemToCart(Long cartId, RequestItemDto item);
 
-    ShoppingCart removeItemFromCart(Long cartId, Long itemId);
+    ResponseShoppingCartDto updateItemInCart(Long cartId, Long itemId, RequestItemDto item);
+
+    ResponseShoppingCartDto removeItemFromCart(Long cartId, Long itemId);
 
     List<Item> getAllItemsInCart(Long cartId);
 
-    ShoppingCart updateCartTotals(Long shoppingCartId);
+    ResponseShoppingCartDto updateCartTotals(Long shoppingCartId);
 
 }

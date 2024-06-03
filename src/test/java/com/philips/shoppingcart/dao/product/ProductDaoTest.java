@@ -38,8 +38,8 @@ class ProductDaoTest {
     @Test
     void getAllProducts() {
         // Given
-        Product product1 = new Product("Product1", 10.0);
-        Product product2 = new Product("Product2", 20.0);
+        Product product1 = new Product(1L,"Product1", 10.0);
+        Product product2 = new Product(1L,"Product2", 20.0);
         List<Product> products = Arrays.asList(product1, product2);
         when(testProductJpaRepository.findAll()).thenReturn(products);
 
@@ -56,7 +56,7 @@ class ProductDaoTest {
     void getProductById() {
         // Given
         Long productId = 1L;
-        Product product = new Product("Product", 10.0);
+        Product product = new Product(1L,"Product", 10.0);
         product.setId(productId);
         when(testProductJpaRepository.findById(productId)).thenReturn(Optional.of(product));
 
@@ -72,7 +72,7 @@ class ProductDaoTest {
     @Test
     void createProduct() {
         // Given
-        Product product = new Product("Product", 10.0);
+        Product product = new Product(1L,"Product", 10.0);
         when(testProductJpaRepository.save(product)).thenReturn(product);
 
         // When

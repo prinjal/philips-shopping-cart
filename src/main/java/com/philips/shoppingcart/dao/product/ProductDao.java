@@ -10,6 +10,5 @@ public interface ProductDao {
     Optional<Product> getProductById(Long id);
     Product createOrUpdateProduct(Product product);
     void deleteProduct(Product product);
-
     boolean productExists(String name);
 }

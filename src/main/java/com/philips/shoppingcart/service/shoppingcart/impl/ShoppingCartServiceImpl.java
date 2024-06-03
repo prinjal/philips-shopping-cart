@@ -1,66 +1,81 @@
 package com.philips.shoppingcart.service.shoppingcart.impl;
 
+import com.philips.shoppingcart.dao.item.ItemDao;
+import com.philips.shoppingcart.dao.product.ProductDao;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
+import com.philips.shoppingcart.dto.item.RequestItemDto;
+import com.philips.shoppingcart.dto.item.ResponseItemDto;
+import com.philips.shoppingcart.dto.product.ResponseProductDto;
+import com.philips.shoppingcart.dto.shoppingcart.RequestShoppingCartDto;
+import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
 import com.philips.shoppingcart.exceptions.ResourceNotFound;
 import com.philips.shoppingcart.model.Item;
+import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.model.ShoppingCart;
 import com.philips.shoppingcart.service.shoppingcart.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartDao shoppingCartDao;
+    private final ItemDao itemDao;
+    private final ProductDao productDao;
 
     @Override
-    public ShoppingCart getShoppingCartById(Long id) {
+    public ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+
+        List<Item> items = requestShoppingCartDto.getItemIds().stream()
+                .map(itemId -> itemDao.getItemById(itemId)
+                        .orElseThrow(() -> new ResourceNotFound("Item not found with id: " + itemId)))
+                .collect(Collectors.toList());
+
+        shoppingCart.setItems(items);
+        ShoppingCart savedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+
+        return convertToDto(savedCart);
+    }
+
+    @Override
+    public ResponseShoppingCartDto getShoppingCartById(Long id) {
+        ShoppingCart shoppingCart = shoppingCartDao.getShoppingCartById(id)
+                .orElseThrow(() -> new ResourceNotFound("Shopping Cart not found"));
+        return convertToDto(shoppingCart);
+    }
+
+    private ShoppingCart getShoppingCartEntityById(Long id) {
         return shoppingCartDao.getShoppingCartById(id)
                 .orElseThrow(() -> new ResourceNotFound("Shopping Cart not found"));
     }
 
     @Override
-    public ShoppingCart addItemToCart(Long cartId, Item item) {
-        ShoppingCart shoppingCart = getShoppingCartById(cartId);
+    public ResponseShoppingCartDto addItemToCart(Long cartId, RequestItemDto itemDto) {
+        ShoppingCart shoppingCart = getShoppingCartEntityById(cartId);
+
+        Product product = productDao.getProductById(itemDto.getProductId())
+                .orElseThrow(() -> new ResourceNotFound("Product not found with id: " + itemDto.getProductId()));
+
+        Item item = new Item();
+        item.setProduct(product);
+        item.setQuantity(itemDto.getQuantity()); // Corrected to set quantity from itemDto
+        item.setShoppingCart(shoppingCart);
+
         shoppingCart.getItems().add(item);
+
         ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+
         return updateCartTotals(updatedCart.getId());
     }
 
     @Override
-    public ShoppingCart updateItemInCart(Long cartId, Long itemId, Item item) {
-        ShoppingCart shoppingCart = getShoppingCartById(cartId);
-        shoppingCart.getItems().stream()
-                .filter(existingItem -> existingItem.getId().equals(itemId))
-                .findFirst()
-                .ifPresent(existingItem -> {
-                    existingItem.setQuantity(item.getQuantity());
-                    existingItem.setProduct(item.getProduct());
-                });
-        ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
-        return updateCartTotals(updatedCart.getId());
-    }
-
-    @Override
-    public ShoppingCart removeItemFromCart(Long cartId, Long itemId) {
-        ShoppingCart shoppingCart = getShoppingCartById(cartId);
-        shoppingCart.getItems().removeIf(item -> item.getId().equals(itemId));
-        ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
-        return updateCartTotals(updatedCart.getId());
-    }
-
-    @Override
-    public List<Item> getAllItemsInCart(Long cartId) {
-        return getShoppingCartById(cartId).getItems();
-    }
-
-    @Override
-    public ShoppingCart updateCartTotals(Long shoppingCartId) {
-        ShoppingCart shoppingCart = getShoppingCartById(shoppingCartId);
+    public ResponseShoppingCartDto updateItemInCart(Long cartId, Long itemId, RequestItemDto itemDto) {
+        ShoppingCart shoppingCart = getShoppingCartEntityById(cartId);
         double totalPrice = shoppingCart.getItems().stream()
                 .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
                 .sum();
@@ -69,6 +84,50 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .sum();
         shoppingCart.setTotalPrice(totalPrice);
         shoppingCart.setTotalItems(totalItems);
-        return shoppingCartDao.saveShoppingCart(shoppingCart);
+        ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+        return convertToDto(updatedCart);
+    }
+
+    @Override
+    public ResponseShoppingCartDto removeItemFromCart(Long cartId, Long itemId) {
+        ShoppingCart shoppingCart = getShoppingCartEntityById(cartId);
+        shoppingCart.getItems().removeIf(item -> item.getId().equals(itemId));
+        ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+        return updateCartTotals(updatedCart.getId());
+    }
+
+    @Override
+    public List<Item> getAllItemsInCart(Long cartId) {
+        return getShoppingCartEntityById(cartId).getItems();
+    }
+
+    @Override
+    public ResponseShoppingCartDto updateCartTotals(Long shoppingCartId) {
+        ShoppingCart shoppingCart = getShoppingCartEntityById(shoppingCartId);
+        double totalPrice = shoppingCart.getItems().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
+                .sum();
+        int totalItems = shoppingCart.getItems().stream()
+                .mapToInt(Item::getQuantity)
+                .sum();
+        shoppingCart.setTotalPrice(totalPrice);
+        shoppingCart.setTotalItems(totalItems);
+        ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+        return convertToDto(updatedCart);
+    }
+
+    private ResponseShoppingCartDto convertToDto(ShoppingCart shoppingCart) {
+        List<ResponseItemDto> responseItemDtos = shoppingCart.getItems().stream()
+                .map(item -> new ResponseItemDto(item.getId(), new ResponseProductDto
+                        (item.getProduct().getId(), item.getProduct().getName(), item.getProduct().getPrice())
+                        , item.getQuantity()))
+                .collect(Collectors.toList());
+
+        return new ResponseShoppingCartDto(
+                shoppingCart.getId(),
+                responseItemDtos,
+                shoppingCart.getTotalPrice(),
+                shoppingCart.getTotalItems()
+        );
     }
 }
