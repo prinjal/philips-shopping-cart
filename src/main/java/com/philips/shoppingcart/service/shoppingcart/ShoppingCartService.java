@@ -8,6 +8,9 @@ import com.philips.shoppingcart.model.Item;
 import java.util.List;
 
 public interface ShoppingCartService {
+
+    List<ResponseShoppingCartDto> getAllShoppingCarts();
+
     ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto);
 
     ResponseShoppingCartDto getShoppingCartById(Long id);

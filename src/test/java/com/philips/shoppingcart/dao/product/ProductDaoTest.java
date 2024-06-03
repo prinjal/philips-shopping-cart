@@ -98,20 +98,20 @@ class ProductDaoTest {
         testProductJpaDataAccess.deleteProduct(product);
 
         // Then
-        verify(testProductJpaRepository, times(1)).deleteById(productId);
+        verify(testProductJpaRepository, times(1)).delete(product);
     }
 
     @Test
     void productExists() {
         // Given
-        Long productId = 1L;
-        when(testProductJpaRepository.existsById(productId)).thenReturn(true);
+        String productName = "Test";
+        when(testProductJpaRepository.existsProductByName(productName)).thenReturn(true);
 
         // When
-        boolean exists = testProductJpaDataAccess.productExists(String.valueOf(productId));
+        boolean exists = testProductJpaDataAccess.productExists(productName);
 
         // Then
         assertThat(exists).isTrue();
-        verify(testProductJpaRepository, times(1)).existsById(productId);
+        verify(testProductJpaRepository, times(1)).existsProductByName(productName);
     }
 }

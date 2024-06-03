@@ -23,7 +23,6 @@ public class Item {
     @GeneratedValue(
             generator = "item_id_seq"
     )
-    @ReadOnlyProperty
     private Long id;
 
     @ManyToOne

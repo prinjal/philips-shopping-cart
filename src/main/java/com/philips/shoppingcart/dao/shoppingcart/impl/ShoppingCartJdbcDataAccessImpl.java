@@ -11,6 +11,11 @@ import java.util.Optional;
 @Component("ShoppingCartJdbcDao")
 public class ShoppingCartJdbcDataAccessImpl implements ShoppingCartDao {
     @Override
+    public List<ShoppingCart> getAllShoppingCarts() {
+        return null;
+    }
+
+    @Override
     public Optional<ShoppingCart> getShoppingCartById(Long id) {
         return null;
     }

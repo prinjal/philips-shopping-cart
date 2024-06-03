@@ -37,8 +37,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseProductDto createProduct(RequestProductDto product) {
         Product newProduct = new Product();
-        product.setName(product.getName());
-        product.setPrice(product.getPrice());
+        newProduct.setName(product.getName());
+        newProduct.setPrice(product.getPrice());
 
         Product savedProduct = productDao.createOrUpdateProduct(newProduct);
         return convertToDto(savedProduct);
