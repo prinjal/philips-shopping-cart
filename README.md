@@ -43,6 +43,13 @@ The application is structured into several packages, each responsible for differ
 - **Repository**: Contains repository interfaces for database operations.
 - **Service**: Contains service classes that implement the business logic.
 
+## CI/CD Pipeline
+
+This project is completely backed by a CI/CD pipeline:
+
+- Continuous Integration (CI): The CI pipeline takes care of running unit and integration tests to ensure that the code is functional and meets the defined quality standards. It automatically runs on pull requests and pushes to the main branch.
+- Continuous Deployment (CD): The CD pipeline handles deploying the Docker image to Docker Hub. This ensures that the latest version of the application is always available in the Docker Hub repository. The application can then be fetched from Docker Hub for deployment.
+
 ## Flyway Migrations
 
 The Shopping Cart API uses Flyway for database migrations. Flyway ensures that the database schema is versioned and can be migrated to newer versions in a consistent and repeatable manner. Migrations are defined in the `resources/db.migration` directory.
