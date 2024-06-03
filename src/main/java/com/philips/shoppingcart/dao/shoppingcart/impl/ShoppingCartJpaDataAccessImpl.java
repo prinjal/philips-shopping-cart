@@ -20,6 +20,11 @@ public class ShoppingCartJpaDataAccessImpl implements ShoppingCartDao {
     private final ShoppingCartJpaRepository shoppingCartJpaRepository;
 
     @Override
+    public List<ShoppingCart> getAllShoppingCarts() {
+        return shoppingCartJpaRepository.findAll();
+    }
+
+    @Override
     public Optional<ShoppingCart> getShoppingCartById(Long id) {
         return shoppingCartJpaRepository.findById(id);
     }

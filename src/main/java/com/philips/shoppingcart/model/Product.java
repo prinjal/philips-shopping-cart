@@ -23,7 +23,6 @@ public class Product {
     @GeneratedValue(
             generator = "product_id_seq"
     )
-    @ReadOnlyProperty
     private Long id;
     @Column(
             nullable = false

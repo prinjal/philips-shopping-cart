@@ -26,7 +26,6 @@ public class ShoppingCart {
     @GeneratedValue(
             generator = "shopping_cart_id_seq"
     )
-    @ReadOnlyProperty
     private Long id;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)

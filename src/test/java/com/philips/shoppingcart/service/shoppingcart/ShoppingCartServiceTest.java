@@ -108,9 +108,10 @@ class ShoppingCartServiceTest {
         // Given
         Long cartId = 1L;
         Long itemId = 1L;
+        Long productId = 1L;
         Item item = new Item();
         item.setId(itemId);
-        Product product = new Product(1L, "Product", 100.0);
+        Product product = new Product(productId, "Product", 100.0);
         item.setProduct(product);
         item.setQuantity(5);
 
@@ -120,16 +121,18 @@ class ShoppingCartServiceTest {
 
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
+        when(productDao.getProductById(productId)).thenReturn(Optional.of(product));
 
         // When
         ResponseShoppingCartDto updatedCart = shoppingCartService.updateItemInCart(cartId, itemId, new RequestItemDto(
-                item.getProduct().getId(),item.getQuantity()
+                productId, item.getQuantity()
         ));
 
         // Then
         assertThat(updatedCart.getItems()).anyMatch(i -> i.getQuantity() == item.getQuantity());
-        verify(shoppingCartDao, times(1)).getShoppingCartById(cartId);
-        verify(shoppingCartDao, times(1)).saveShoppingCart(cart);
+        verify(shoppingCartDao, times(2)).getShoppingCartById(cartId);
+        verify(shoppingCartDao, times(2)).saveShoppingCart(cart);
+        verify(productDao, times(1)).getProductById(productId); // Ensure the productDao is called
     }
 
     @Test

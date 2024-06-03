@@ -19,8 +19,8 @@ public class OpenAPIConfiguration {
         server.setDescription("Development");
 
         Contact myContact = new Contact();
-        myContact.setName("Jane Doe");
-        myContact.setEmail("your.email@gmail.com");
+        myContact.setName("Prinjal dave");
+        myContact.setEmail("prinjal.dave@gmail.com");
 
         Info information = new Info()
                 .title("Shopping Cart API")

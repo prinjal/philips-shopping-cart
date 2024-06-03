@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/shopping-carts")
 @RequiredArgsConstructor
@@ -23,6 +25,12 @@ public class ShoppingCartController {
     @PostMapping("")
     public ResponseEntity<ResponseShoppingCartDto> createShoppingCart(@RequestBody RequestShoppingCartDto shoppingCartDto) {
         ResponseShoppingCartDto shoppingCart = shoppingCartService.createShoppingCart(shoppingCartDto);
+        return ResponseEntity.ok(shoppingCart);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<ResponseShoppingCartDto>> getShoppingCarts() {
+        List<ResponseShoppingCartDto> shoppingCart = shoppingCartService.getAllShoppingCarts();
         return ResponseEntity.ok(shoppingCart);
     }
 

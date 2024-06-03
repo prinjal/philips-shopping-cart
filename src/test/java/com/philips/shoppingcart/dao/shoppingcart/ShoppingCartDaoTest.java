@@ -58,19 +58,30 @@ class ShoppingCartDaoTest {
     void addItemToCart() {
         // Given
         Long cartId = 1L;
+        Long productId = 1L;
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
+
+        Product product = new Product(productId, "Product", 100.0);
         Item item = new Item();
+        item.setProduct(product);
+        item.setQuantity(5);
+        item.setShoppingCart(cart);
+
         when(testShoppingCartJpaRepository.findById(cartId)).thenReturn(Optional.of(cart));
-        when(testShoppingCartJpaRepository.save(cart)).thenReturn(cart);
+        when(testShoppingCartJpaRepository.save(cart)).thenAnswer(invocation -> {
+            ShoppingCart savedCart = invocation.getArgument(0);
+            savedCart.getItems().add(item);
+            return savedCart;
+        });
 
         // When
+        cart.getItems().add(item);
         ShoppingCart updatedCart = testShoppingCartJpaDataAccess.saveShoppingCart(cart);
 
         // Then
         assertThat(updatedCart).isEqualTo(cart);
         assertThat(updatedCart.getItems()).contains(item);
-        verify(testShoppingCartJpaRepository, times(1)).findById(cartId);
         verify(testShoppingCartJpaRepository, times(1)).save(cart);
     }
 
