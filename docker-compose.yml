@@ -15,7 +15,7 @@ services:
 
   philips-shopping-cart:
     container_name: philips-shopping-cart-api
-    image: prinjaldave0711/philips-shopping-cart
+    image: prinjaldave0711/philips-shopping-cart:latest
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
     ports:
