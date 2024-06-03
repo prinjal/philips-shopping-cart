@@ -1,5 +1,6 @@
 package com.philips.shoppingcart.service.shoppingcart;
 
+import com.philips.shoppingcart.dto.item.RequestItemDto;
 import com.philips.shoppingcart.dto.shoppingcart.RequestShoppingCartDto;
 import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
 import com.philips.shoppingcart.model.Item;
@@ -11,9 +12,9 @@ public interface ShoppingCartService {
 
     ResponseShoppingCartDto getShoppingCartById(Long id);
 
-    ResponseShoppingCartDto addItemToCart(Long cartId, Item item);
+    ResponseShoppingCartDto addItemToCart(Long cartId, RequestItemDto item);
 
-    ResponseShoppingCartDto updateItemInCart(Long cartId, Long itemId, Item item);
+    ResponseShoppingCartDto updateItemInCart(Long cartId, Long itemId, RequestItemDto item);
 
     ResponseShoppingCartDto removeItemFromCart(Long cartId, Long itemId);
 

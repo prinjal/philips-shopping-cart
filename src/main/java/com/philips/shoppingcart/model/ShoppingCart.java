@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "items")
 public class ShoppingCart {
     @Id
     @SequenceGenerator(

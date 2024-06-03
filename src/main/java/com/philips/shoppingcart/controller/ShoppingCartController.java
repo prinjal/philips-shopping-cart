@@ -1,5 +1,6 @@
 package com.philips.shoppingcart.controller;
 
+import com.philips.shoppingcart.dto.item.RequestItemDto;
 import com.philips.shoppingcart.dto.item.ResponseItemDto;
 import com.philips.shoppingcart.dto.shoppingcart.RequestShoppingCartDto;
 import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
@@ -32,13 +33,13 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/{id}/items")
-    public ResponseEntity<ResponseShoppingCartDto> addItemToCart(@PathVariable Long id, @RequestBody Item item) {
+    public ResponseEntity<ResponseShoppingCartDto> addItemToCart(@PathVariable Long id, @RequestBody RequestItemDto item) {
         ResponseShoppingCartDto responseCart = shoppingCartService.addItemToCart(id, item);
         return ResponseEntity.status(201).body(responseCart);
     }
 
     @PutMapping("/{id}/items/{itemId}")
-    public ResponseEntity<ResponseShoppingCartDto> updateItemInCart(@PathVariable Long id, @PathVariable Long itemId, @RequestBody Item item) {
+    public ResponseEntity<ResponseShoppingCartDto> updateItemInCart(@PathVariable Long id, @PathVariable Long itemId, @RequestBody RequestItemDto item) {
         ResponseShoppingCartDto updatedCart = shoppingCartService.updateItemInCart(id, itemId, item);
         return ResponseEntity.ok(updatedCart);
     }

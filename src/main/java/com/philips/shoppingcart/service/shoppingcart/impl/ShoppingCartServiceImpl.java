@@ -1,13 +1,16 @@
 package com.philips.shoppingcart.service.shoppingcart.impl;
 
 import com.philips.shoppingcart.dao.item.ItemDao;
+import com.philips.shoppingcart.dao.product.ProductDao;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
+import com.philips.shoppingcart.dto.item.RequestItemDto;
 import com.philips.shoppingcart.dto.item.ResponseItemDto;
 import com.philips.shoppingcart.dto.product.ResponseProductDto;
 import com.philips.shoppingcart.dto.shoppingcart.RequestShoppingCartDto;
 import com.philips.shoppingcart.dto.shoppingcart.ResponseShoppingCartDto;
 import com.philips.shoppingcart.exceptions.ResourceNotFound;
 import com.philips.shoppingcart.model.Item;
+import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.model.ShoppingCart;
 import com.philips.shoppingcart.service.shoppingcart.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartDao shoppingCartDao;
     private final ItemDao itemDao;
+    private final ProductDao productDao;
 
     @Override
     public ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto) {
@@ -51,25 +55,37 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ResponseShoppingCartDto addItemToCart(Long cartId, Item item) {
+    public ResponseShoppingCartDto addItemToCart(Long cartId, RequestItemDto itemDto) {
         ShoppingCart shoppingCart = getShoppingCartEntityById(cartId);
+
+        Product product = productDao.getProductById(itemDto.getProductId())
+                .orElseThrow(() -> new ResourceNotFound("Product not found with id: " + itemDto.getProductId()));
+
+        Item item = new Item();
+        item.setProduct(product);
+        item.setQuantity(itemDto.getQuantity()); // Corrected to set quantity from itemDto
+        item.setShoppingCart(shoppingCart);
+
         shoppingCart.getItems().add(item);
+
         ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+
         return updateCartTotals(updatedCart.getId());
     }
 
     @Override
-    public ResponseShoppingCartDto updateItemInCart(Long cartId, Long itemId, Item item) {
+    public ResponseShoppingCartDto updateItemInCart(Long cartId, Long itemId, RequestItemDto itemDto) {
         ShoppingCart shoppingCart = getShoppingCartEntityById(cartId);
-        shoppingCart.getItems().stream()
-                .filter(existingItem -> existingItem.getId().equals(itemId))
-                .findFirst()
-                .ifPresent(existingItem -> {
-                    existingItem.setQuantity(item.getQuantity());
-                    existingItem.setProduct(item.getProduct());
-                });
+        double totalPrice = shoppingCart.getItems().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
+                .sum();
+        int totalItems = shoppingCart.getItems().stream()
+                .mapToInt(Item::getQuantity)
+                .sum();
+        shoppingCart.setTotalPrice(totalPrice);
+        shoppingCart.setTotalItems(totalItems);
         ShoppingCart updatedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
-        return updateCartTotals(updatedCart.getId());
+        return convertToDto(updatedCart);
     }
 
     @Override

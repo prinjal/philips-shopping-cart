@@ -1,5 +1,6 @@
 package com.philips.shoppingcart.service.item;
 
+import com.philips.shoppingcart.AbstractTestContainer;
 import com.philips.shoppingcart.dao.item.ItemDao;
 import com.philips.shoppingcart.dto.item.ResponseItemDto;
 import com.philips.shoppingcart.dto.product.ResponseProductDto;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-class ItemServiceTest {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class ItemServiceTest extends AbstractTestContainer {
 
     @Mock
     private ItemDao itemDao;
@@ -47,13 +50,28 @@ class ItemServiceTest {
         Long itemId = 1L;
         Item item = new Item();
         item.setId(itemId);
+        item.setProduct(
+                new Product(
+                        1L,
+                        "Test",
+                        10.0
+                )
+        );
         when(itemDao.getItemById(itemId)).thenReturn(Optional.of(item));
 
         // When
         Optional<ResponseItemDto> retrievedItem = itemService.getItemById(itemId);
 
         // Then
-        assertThat(retrievedItem).isEqualTo(item);
+        ResponseItemDto expectedItem = new ResponseItemDto(
+                item.getId(),
+                new ResponseProductDto(item.getProduct().getId(),
+                        item.getProduct().getName(),
+                        item.getProduct().getPrice()),
+                item.getQuantity());
+
+        assertThat(retrievedItem).isPresent();
+        assertThat(retrievedItem.get()).isEqualToComparingFieldByField(expectedItem);
         verify(itemDao, times(1)).getItemById(itemId);
     }
 

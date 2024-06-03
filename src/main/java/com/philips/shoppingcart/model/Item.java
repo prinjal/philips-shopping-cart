@@ -12,7 +12,7 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"product","shoppingCart"})
 public class Item {
     @Id
     @SequenceGenerator(
