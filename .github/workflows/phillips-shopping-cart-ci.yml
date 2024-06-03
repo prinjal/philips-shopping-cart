@@ -1,4 +1,4 @@
-name: CI - Build Backend
+name: CI - Build Shopping Cart backend
 
 on:
   pull_request:
