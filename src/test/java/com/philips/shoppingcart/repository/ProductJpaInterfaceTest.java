@@ -3,6 +3,7 @@ package com.philips.shoppingcart.repository;
 import com.philips.shoppingcart.model.Product;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -12,6 +13,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase
 class ProductJpaInterfaceTest {
 
+    @Autowired
     private static ProductJpaRepository testProductJpaRepository;
 
     @BeforeAll
@@ -22,7 +24,7 @@ class ProductJpaInterfaceTest {
     @Test
     void existsProductById() {
         // Given
-        Product product = new Product("Test", 10.0);
+        Product product = new Product(1L,"Test", 10.0);
         product = testProductJpaRepository.save(product);
 
         // When

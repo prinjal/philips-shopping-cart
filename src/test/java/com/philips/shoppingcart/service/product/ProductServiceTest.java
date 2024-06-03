@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -44,8 +45,14 @@ class ProductServiceTest {
         // Given
         Product product1 = new Product();
         product1.setId(1L);
+        product1.setName("Product 1");
+        product1.setPrice(100.0);
+
         Product product2 = new Product();
         product2.setId(2L);
+        product2.setName("Product 2");
+        product2.setPrice(200.0);
+
         List<Product> products = Arrays.asList(product1, product2);
         when(productDao.getAllProducts()).thenReturn(products);
 
@@ -54,7 +61,14 @@ class ProductServiceTest {
 
         // Then
         assertThat(retrievedProducts).hasSize(2);
-        assertThat(retrievedProducts).containsExactlyInAnyOrder(product1, product2);
+
+        List<ResponseProductDto> expectedProducts = products.stream()
+                .map(product -> new ResponseProductDto(product.getId(), product.getName(), product.getPrice()))
+                .collect(Collectors.toList());
+
+        assertThat(retrievedProducts).usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyInAnyOrderElementsOf(expectedProducts);
+
         verify(productDao, times(1)).getAllProducts();
     }
 
