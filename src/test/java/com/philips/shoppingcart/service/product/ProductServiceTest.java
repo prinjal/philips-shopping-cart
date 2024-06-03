@@ -1,7 +1,6 @@
 package com.philips.shoppingcart.service.product;
 
 import com.philips.shoppingcart.dao.product.ProductDao;
-import com.philips.shoppingcart.dto.ProductDto;
 import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.service.product.impl.ProductServiceImpl;
 import org.junit.jupiter.api.AfterEach;
@@ -41,17 +40,19 @@ class ProductServiceTest {
     @Test
     void getAllProducts() {
         // Given
-        Product product1 = new Product(1L, "Product 1", 10.0);
-        Product product2 = new Product(2L, "Product 2", 20.0);
+        Product product1 = new Product();
+        product1.setId(1L);
+        Product product2 = new Product();
+        product2.setId(2L);
         List<Product> products = Arrays.asList(product1, product2);
         when(productDao.getAllProducts()).thenReturn(products);
 
         // When
-        List<ProductDto> retrievedProducts = productService.getAllProducts();
+        List<Product> retrievedProducts = productService.getAllProducts();
 
         // Then
         assertThat(retrievedProducts).hasSize(2);
-        assertThat(retrievedProducts).extracting("name").containsExactlyInAnyOrder("Product 1", "Product 2");
+        assertThat(retrievedProducts).containsExactlyInAnyOrder(product1, product2);
         verify(productDao, times(1)).getAllProducts();
     }
 
@@ -59,74 +60,70 @@ class ProductServiceTest {
     void getProductById() {
         // Given
         Long productId = 1L;
-        Product product = new Product(productId, "Product 1", 10.0);
+        Product product = new Product();
+        product.setId(productId);
         when(productDao.getProductById(productId)).thenReturn(Optional.of(product));
 
         // When
-        ProductDto retrievedProduct = productService.getProductById(productId);
+        Product retrievedProduct = productService.getProductById(productId);
 
         // Then
-        assertThat(retrievedProduct.getName()).isEqualTo(product.getName());
-        assertThat(retrievedProduct.getPrice()).isEqualTo(product.getPrice());
+        assertThat(retrievedProduct).isEqualTo(product);
         verify(productDao, times(1)).getProductById(productId);
     }
 
     @Test
     void createProduct() {
         // Given
-        ProductDto productDto = new ProductDto("New Product", 10.0);
-        Product product = new Product(null, productDto.getName(), productDto.getPrice());
-        when(productDao.createOrUpdateProduct(any(Product.class))).thenReturn(product);
+        Product product = new Product();
+        product.setName("New Product");
+        product.setPrice(10.0);
+        when(productDao.createOrUpdateProduct(product)).thenReturn(product);
 
         // When
-        ProductDto createdProduct = productService.createProduct(productDto);
+        Product createdProduct = productService.createProduct(product);
 
         // Then
-        assertThat(createdProduct.getName()).isEqualTo(productDto.getName());
-        assertThat(createdProduct.getPrice()).isEqualTo(productDto.getPrice());
-        verify(productDao, times(1)).createOrUpdateProduct(any(Product.class));
+        assertThat(createdProduct).isEqualTo(product);
+        verify(productDao, times(1)).createOrUpdateProduct(product);
     }
 
     @Test
     void updateProduct() {
         // Given
-        Long productId = 1L;
-        ProductDto productDto = new ProductDto("Updated Product", 20.0);
-        Product existingProduct = new Product(productId, "Old Product", 10.0);
-        Product updatedProduct = new Product(productId, productDto.getName(), productDto.getPrice());
-
-        when(productDao.getProductById(productId)).thenReturn(Optional.of(existingProduct));
-        when(productDao.createOrUpdateProduct(any(Product.class))).thenReturn(updatedProduct);
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Updated Product");
+        product.setPrice(20.0);
+        when(productDao.createOrUpdateProduct(product)).thenReturn(product);
 
         // When
-        ProductDto result = productService.updateProduct(productId, productDto);
+        Product updatedProduct = productService.updateProduct(product.getId(),product);
 
         // Then
-        assertThat(result.getName()).isEqualTo(productDto.getName());
-        assertThat(result.getPrice()).isEqualTo(productDto.getPrice());
-        verify(productDao, times(1)).getProductById(productId);
-        verify(productDao, times(1)).createOrUpdateProduct(any(Product.class));
+        assertThat(updatedProduct).isEqualTo(product);
+        verify(productDao, times(1)).createOrUpdateProduct(product);
     }
 
     @Test
     void deleteProduct() {
         // Given
-        Long productId = 1L;
-        Product existingProduct = new Product(productId, "Product", 10.0);
-        when(productDao.getProductById(productId)).thenReturn(Optional.of(existingProduct));
+        Product product = new Product();
+        product.setName("New Product");
+        product.setPrice(10.0);
 
         // When
-        productService.deleteProduct(productId);
+        productService.deleteProduct(product.getId());
 
         // Then
-        verify(productDao, times(1)).getProductById(productId);
-        verify(productDao, times(1)).deleteProduct(existingProduct);
+        verify(productDao, times(1)).deleteProduct(product);
     }
 
     @Test
     void productExists() {
         // Given
-        String productName = "Test";
+        Long productId = 1L;
+        String productName="Test";
         when(productDao.productExists(productName)).thenReturn(true);
 
         // When

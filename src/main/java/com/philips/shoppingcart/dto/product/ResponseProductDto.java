@@ -1,4 +1,4 @@
-package com.philips.shoppingcart.dto;
+package com.philips.shoppingcart.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProductDto {
+public class ResponseProductDto {
+    private Long id;
     private String name;
     private double price;
 }

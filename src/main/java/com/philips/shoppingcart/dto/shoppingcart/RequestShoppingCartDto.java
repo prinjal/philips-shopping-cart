@@ -1,4 +1,4 @@
-package com.philips.shoppingcart.dto;
+package com.philips.shoppingcart.dto.shoppingcart;
 
 
 import lombok.AllArgsConstructor;
@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ShoppingCartDto {
-    private List<ItemDto> items;
+public class RequestShoppingCartDto {
+    private List<Long> itemIds;
 }

@@ -1,7 +1,8 @@
 package com.philips.shoppingcart.service.product.impl;
 
 import com.philips.shoppingcart.dao.product.ProductDao;
-import com.philips.shoppingcart.dto.ProductDto;
+import com.philips.shoppingcart.dto.product.RequestProductDto;
+import com.philips.shoppingcart.dto.product.ResponseProductDto;
 import com.philips.shoppingcart.exceptions.ResourceNotFound;
 import com.philips.shoppingcart.model.Product;
 import com.philips.shoppingcart.service.product.ProductService;
@@ -19,36 +20,37 @@ public class ProductServiceImpl implements ProductService {
     private final ProductDao productDao;
 
     @Override
-    public List<ProductDto> getAllProducts() {
+    public List<ResponseProductDto> getAllProducts() {
         List<Product> products = productDao.getAllProducts();
-        return products.stream().map(this::convertToDto)
+        return products.stream()
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ProductDto getProductById(Long id) {
+    public ResponseProductDto getProductById(Long id) {
         Product product = productDao.getProductById(id)
-                .orElseThrow(() -> new ResourceNotFound("Product not found"));
+                .orElseThrow(() -> new ResourceNotFound("Product not found with id: " + id));
         return convertToDto(product);
     }
 
     @Override
-    public ProductDto createProduct(ProductDto productDto) {
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setPrice(productDto.getPrice());
+    public ResponseProductDto createProduct(RequestProductDto product) {
+        Product newProduct = new Product();
+        product.setName(product.getName());
+        product.setPrice(product.getPrice());
 
-        Product savedProduct = productDao.createOrUpdateProduct(product);
+        Product savedProduct = productDao.createOrUpdateProduct(newProduct);
         return convertToDto(savedProduct);
     }
 
     @Override
-    public ProductDto updateProduct(Long id, ProductDto productDto) {
+    public ResponseProductDto updateProduct(Long id, RequestProductDto product) {
         Product existingProduct = productDao.getProductById(id)
-                .orElseThrow(() -> new ResourceNotFound("Product not found"));
+                .orElseThrow(() -> new ResourceNotFound("Product not found with id: " + id));
 
-        existingProduct.setName(productDto.getName());
-        existingProduct.setPrice(productDto.getPrice());
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
 
         Product updatedProduct = productDao.createOrUpdateProduct(existingProduct);
         return convertToDto(updatedProduct);
@@ -57,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         Product existingProduct = productDao.getProductById(id)
-                .orElseThrow(() -> new ResourceNotFound("Product not found"));
+                .orElseThrow(() -> new ResourceNotFound("Product not found with id: " + id));
         productDao.deleteProduct(existingProduct);
     }
 
@@ -66,7 +68,11 @@ public class ProductServiceImpl implements ProductService {
         return productDao.productExists(name);
     }
 
-    private ProductDto convertToDto(Product product) {
-        return new ProductDto(product.getName(), product.getPrice());
+    private ResponseProductDto convertToDto(Product product) {
+        return new ResponseProductDto(
+                product.getId(),
+                product.getName(),
+                product.getPrice()
+        );
     }
 }

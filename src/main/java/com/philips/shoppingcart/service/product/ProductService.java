@@ -1,16 +1,15 @@
 package com.philips.shoppingcart.service.product;
 
-import com.philips.shoppingcart.dto.ProductDto;
-import com.philips.shoppingcart.model.Product;
+import com.philips.shoppingcart.dto.product.RequestProductDto;
+import com.philips.shoppingcart.dto.product.ResponseProductDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
-    List<ProductDto> getAllProducts();
-    ProductDto getProductById(Long id);
-    ProductDto createProduct(ProductDto product);
-    ProductDto updateProduct(Long id, ProductDto product);
+    List<ResponseProductDto> getAllProducts();
+    ResponseProductDto getProductById(Long id);
+    ResponseProductDto createProduct(RequestProductDto product);
+    ResponseProductDto updateProduct(Long id, RequestProductDto product);
     void deleteProduct(Long id);
 
     boolean productExists(String name);
