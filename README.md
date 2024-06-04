@@ -22,11 +22,11 @@ To run the Shopping Cart API locally, follow these steps:
 This command will build the Docker images and start the containers as defined in the `docker-compose.yml` file.
 
 ## Architecture
-[TO DO]
+![Architecutre](src/main/resources/static/Architecture.png)
 
 ## Database Design
 
-![Architecture](src/main/resources/static/Database.png)
+![Database Design](src/main/resources/static/Database.png)
 
 The Shopping Cart API follows an n-tier architecture, which is a common design pattern used to separate different functionalities of an application into distinct layers. Here’s a brief overview of each layer:
 
