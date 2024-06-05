@@ -30,7 +30,7 @@ public class User implements UserDetails {
     )
     private Long id;
 
-    @Column(nullable = false)
+    @Column()
     private String fullName;
 
     @Column(unique = true, length = 100, nullable = false)
@@ -44,7 +44,6 @@ public class User implements UserDetails {
     private Date createdAt;
 
     @UpdateTimestamp
-//    @Column(name = "updated_at")
     private Date updatedAt;
 
     @Override
