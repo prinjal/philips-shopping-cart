@@ -34,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
             return Optional.of(new ResponseItemDto(existingItem.getId(),
                     new ResponseProductDto(existingItem.getId(),
                             existingProduct.getName(),
-                            existingProduct.getPrice()), existingItem.getQuantity()));
+                            existingProduct.getPrice()), existingItem.getQuantity(),existingItem.getShoppingCart().getId()));
         }
         else{
             throw new ResourceNotFound("Item not present");
@@ -51,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
                                 item.getProduct().getId(),
                                 item.getProduct().getName(),
                                 item.getProduct().getPrice()),
-                        item.getQuantity()))
+                        item.getQuantity(),item.getShoppingCart().getId()))
                 .collect(Collectors.toList());
     }
 }

@@ -131,7 +131,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         List<ResponseItemDto> responseItemDtos = shoppingCart.getItems().stream()
                 .map(item -> new ResponseItemDto(item.getId(), new ResponseProductDto
                         (item.getProduct().getId(), item.getProduct().getName(), item.getProduct().getPrice())
-                        , item.getQuantity()))
+                        , item.getQuantity(),item.getShoppingCart().getId()))
                 .collect(Collectors.toList());
 
         return new ResponseShoppingCartDto(
