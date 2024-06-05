@@ -14,10 +14,8 @@ import com.philips.shoppingcart.service.shoppingcart.impl.ShoppingCartServiceImp
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
 import java.util.List;
@@ -96,7 +94,7 @@ class ShoppingCartServiceTest {
 
         // Then
         assertThat(updatedCart.getItems())
-                .extracting(ResponseItemDto::getProductId, ResponseItemDto::getQuantity)
+                .extracting(ResponseItemDto::getProduct, ResponseItemDto::getQuantity)
                 .containsExactly(tuple(responseProductDto, quantity));
         verify(shoppingCartDao, times(2)).getShoppingCartById(cartId);
         verify(productDao, times(1)).getProductById(productId);
@@ -118,6 +116,7 @@ class ShoppingCartServiceTest {
         ShoppingCart cart = new ShoppingCart();
         cart.setId(cartId);
         cart.getItems().add(item);
+        item.setShoppingCart(cart);
 
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
@@ -194,6 +193,8 @@ class ShoppingCartServiceTest {
         item2.setQuantity(1);
         item2.setProduct(new Product(2L, "Product2", 20.0));
         cart.getItems().addAll(Arrays.asList(item1, item2));
+        item1.setShoppingCart(cart);
+        item2.setShoppingCart(cart);
         when(shoppingCartDao.getShoppingCartById(cartId)).thenReturn(Optional.of(cart));
         when(shoppingCartDao.saveShoppingCart(cart)).thenReturn(cart);
 
