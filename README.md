@@ -24,6 +24,19 @@ This command will build the Docker images and start the containers as defined in
 ## Architecture
 ![Architecutre](src/main/resources/static/Architecture.png)
 
+### Workflow Overview
+
+1. **Code Commit**: Developers commit code changes to the repository.
+2. **Continuous Integration (CI) with GitHub Actions**:
+   - **Compile**: Maven compiles the source code.
+   - **Unit Tests**: Runs unit tests using JUnit.
+   - **Integration Tests**: Runs integration tests.
+   - **Package**: Packages the application into a JAR file using Maven.
+3. **Containerization**:
+   - **Build Docker Image**: The JAR file is containerized using Jib including all the dependencies, creating a Docker image without a Dockerfile. 
+4. **Continuous Deployment (CD)**:
+   - **Push to Docker Hub**: The Docker image is pushed to Docker Hub for storage and distribution.
+
 ## Database Design
 
 ![Database Design](src/main/resources/static/Database.png)
