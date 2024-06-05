@@ -1,31 +1,24 @@
 package com.philips.shoppingcart.service.auth;
 
+import com.philips.shoppingcart.dao.user.UserDao;
 import com.philips.shoppingcart.dto.user.RequestUserDto;
 import com.philips.shoppingcart.dto.user.LoginRequestUserDto;
 import com.philips.shoppingcart.model.User;
 import com.philips.shoppingcart.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
-
-    public AuthenticationService(
-            UserRepository userRepository,
-            AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public User signup(RequestUserDto input) {
         User user = new User();
@@ -33,7 +26,7 @@ public class AuthenticationService {
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
 
-        return userRepository.save(user);
+        return userDao.saveUser(user);
     }
 
     public User authenticate(LoginRequestUserDto input) {
@@ -44,7 +37,7 @@ public class AuthenticationService {
                 )
         );
 
-        return userRepository.findByEmail(input.getEmail())
+        return userDao.findByEmail(input.getEmail())
                 .orElseThrow();
     }
 }
