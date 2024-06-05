@@ -6,6 +6,7 @@ import com.philips.shoppingcart.dto.item.ResponseItemDto;
 import com.philips.shoppingcart.dto.product.ResponseProductDto;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.Product;
+import com.philips.shoppingcart.model.ShoppingCart;
 import com.philips.shoppingcart.service.item.impl.ItemServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,6 +58,9 @@ class ItemServiceTest extends AbstractTestContainer {
                         10.0
                 )
         );
+        ShoppingCart shoppingCart=new ShoppingCart();
+        shoppingCart.setItems(List.of(item));
+        item.setShoppingCart(shoppingCart);
         when(itemDao.getItemById(itemId)).thenReturn(Optional.of(item));
 
         // When
@@ -68,7 +72,7 @@ class ItemServiceTest extends AbstractTestContainer {
                 new ResponseProductDto(item.getProduct().getId(),
                         item.getProduct().getName(),
                         item.getProduct().getPrice()),
-                item.getQuantity());
+                item.getQuantity(),item.getShoppingCart().getId());
 
         assertThat(retrievedItem).isPresent();
         assertThat(retrievedItem.get()).isEqualToComparingFieldByField(expectedItem);
@@ -90,6 +94,10 @@ class ItemServiceTest extends AbstractTestContainer {
         item2.setId(2L);
         item2.setProduct(product2);
         item2.setQuantity(3);
+        ShoppingCart shoppingCart=new ShoppingCart();
+        shoppingCart.setItems(List.of(item1,item2));
+        item2.setShoppingCart(shoppingCart);
+        item1.setShoppingCart(shoppingCart);
 
         List<Item> items = Arrays.asList(item1, item2);
         when(itemDao.getItems()).thenReturn(items);
@@ -106,7 +114,7 @@ class ItemServiceTest extends AbstractTestContainer {
                         new ResponseProductDto(item.getProduct().getId(),
                         item.getProduct().getName(),
                         item.getProduct().getPrice()),
-                        item.getQuantity()))
+                        item.getQuantity(),item.getShoppingCart().getId()))
                 .collect(Collectors.toList());
 
         assertThat(retrievedItems).usingRecursiveFieldByFieldElementComparator()

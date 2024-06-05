@@ -10,6 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class ResponseItemDto {
     private Long id;
-    private ResponseProductDto productId;
+    private ResponseProductDto product;
     private int quantity;
+    private Long shoppngCartId;
 }
