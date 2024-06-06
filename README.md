@@ -14,10 +14,11 @@ To run the Shopping Cart API locally, follow these steps:
     ```sh
     docker compose up --build
     ```
-3. **Navigate to** [http://localhost:8080/](http://localhost:8080/) to access the application.
 
-4. **Swagger Support**:
-    - Swagger UI is available at [http://localhost:8080/](http://localhost:8080/) to test the APIs.
+3. **Swagger Support**:
+    - Swagger UI is available at [http://localhost:8080/swagger](http://localhost:8080/swagger) to test the APIs.
+4. Use "john.doe@example.com" and "password123" to get the token from /auth/login endpoint.
+5. Add the token in the top right section of Swagger UI to access all the endpoints.
 
 This command will build the Docker images and start the containers as defined in the `docker-compose.yml` file.
 
@@ -55,6 +56,7 @@ The application is structured into several packages, each responsible for differ
 - **Model**: Contains the domain models representing business entities.
 - **Repository**: Contains repository interfaces for database operations.
 - **Service**: Contains service classes that implement the business logic.
+- **Security**: Implements JWT security for the application, ensuring secure communication and authentication.
 
 ## CI/CD Pipeline
 
