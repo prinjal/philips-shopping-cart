@@ -30,7 +30,7 @@ public class User implements UserDetails {
     )
     private Long id;
 
-    @Column()
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(unique = true, length = 100, nullable = false)
@@ -42,6 +42,10 @@ public class User implements UserDetails {
     @CreationTimestamp
     @Column(updatable = false)
     private Date createdAt;
+
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "shopping_cart_id")
+    private ShoppingCart shoppingCart;
 
     @UpdateTimestamp
     private Date updatedAt;

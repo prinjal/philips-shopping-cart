@@ -22,17 +22,17 @@ public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
 
-    @PostMapping("")
-    public ResponseEntity<ResponseShoppingCartDto> createShoppingCart(@RequestBody RequestShoppingCartDto shoppingCartDto) {
-        ResponseShoppingCartDto shoppingCart = shoppingCartService.createShoppingCart(shoppingCartDto);
-        return ResponseEntity.ok(shoppingCart);
-    }
+//    @PostMapping("")
+//    public ResponseEntity<ResponseShoppingCartDto> createShoppingCart(@RequestBody RequestShoppingCartDto shoppingCartDto) {
+//        ResponseShoppingCartDto shoppingCart = shoppingCartService.createShoppingCart(shoppingCartDto);
+//        return ResponseEntity.ok(shoppingCart);
+//    }
 
-    @GetMapping("")
-    public ResponseEntity<List<ResponseShoppingCartDto>> getShoppingCarts() {
-        List<ResponseShoppingCartDto> shoppingCart = shoppingCartService.getAllShoppingCarts();
-        return ResponseEntity.ok(shoppingCart);
-    }
+//    @GetMapping("")
+//    public ResponseEntity<List<ResponseShoppingCartDto>> getShoppingCarts() {
+//        List<ResponseShoppingCartDto> shoppingCart = shoppingCartService.getAllShoppingCarts();
+//        return ResponseEntity.ok(shoppingCart);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseShoppingCartDto> getShoppingCartById(@PathVariable Long id) {

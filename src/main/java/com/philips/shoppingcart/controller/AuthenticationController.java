@@ -4,8 +4,9 @@ import com.philips.shoppingcart.config.security.JwtService;
 import com.philips.shoppingcart.dto.user.LoginResponseDto;
 import com.philips.shoppingcart.dto.user.LoginRequestUserDto;
 import com.philips.shoppingcart.dto.user.RequestUserDto;
+import com.philips.shoppingcart.dto.user.ResponseUserDto;
 import com.philips.shoppingcart.model.User;
-import com.philips.shoppingcart.service.auth.AuthenticationService;
+import com.philips.shoppingcart.service.auth.impl.AuthenticationServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,23 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final JwtService jwtService;
 
-    private final AuthenticationService authenticationService;
+    private final AuthenticationServiceImpl authenticationServiceImpl;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+    public AuthenticationController(JwtService jwtService, AuthenticationServiceImpl authenticationServiceImpl) {
         this.jwtService = jwtService;
-        this.authenticationService = authenticationService;
+        this.authenticationServiceImpl = authenticationServiceImpl;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RequestUserDto registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<ResponseUserDto> register(@RequestBody RequestUserDto registerUserDto) {
+        ResponseUserDto registeredUser = authenticationServiceImpl.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> authenticate(@RequestBody LoginRequestUserDto loginRequestUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginRequestUserDto);
+        User authenticatedUser = authenticationServiceImpl.getUserObject(loginRequestUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 

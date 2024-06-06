@@ -36,4 +36,7 @@ public class ShoppingCart {
 
     @ReadOnlyProperty
     private int totalItems;
+
+    @OneToOne
+    private User user;
 }
