@@ -11,7 +11,7 @@ public interface ShoppingCartService {
 
     List<ResponseShoppingCartDto> getAllShoppingCarts();
 
-    ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto);
+//    ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto);
 
     ResponseShoppingCartDto getShoppingCartById(Long id);
 

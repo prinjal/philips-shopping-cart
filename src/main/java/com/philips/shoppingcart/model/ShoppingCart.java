@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(
-        name = "SHOPPING_CART"
+        name = "SHOPPING_CARTS"
 )
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,12 +19,12 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     @SequenceGenerator(
-            name = "shopping_cart_id_seq",
-            sequenceName = "shopping_cart_id_seq",
+            name = "shopping_carts_id_seq",
+            sequenceName = "shopping_carts_id_seq",
             allocationSize = 1
     )
     @GeneratedValue(
-            generator = "shopping_cart_id_seq"
+            generator = "shopping_carts_id_seq"
     )
     private Long id;
 
@@ -36,4 +36,7 @@ public class ShoppingCart {
 
     @ReadOnlyProperty
     private int totalItems;
+
+    @OneToOne(mappedBy = "shoppingCart")
+    private User user;
 }

@@ -35,20 +35,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ).collect(Collectors.toList());
     }
 
-    @Override
-    public ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto) {
-        ShoppingCart shoppingCart = new ShoppingCart();
-
-        List<Item> items = requestShoppingCartDto.getItemIds().stream()
-                .map(itemId -> itemDao.getItemById(itemId)
-                        .orElseThrow(() -> new ResourceNotFound("Item not found with id: " + itemId)))
-                .collect(Collectors.toList());
-
-        shoppingCart.setItems(items);
-        ShoppingCart savedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
-
-        return convertToDto(savedCart);
-    }
+//    @Override
+//    public ResponseShoppingCartDto createShoppingCart(RequestShoppingCartDto requestShoppingCartDto) {
+//        ShoppingCart shoppingCart = new ShoppingCart();
+//
+//        List<Item> items = requestShoppingCartDto.getItemIds().stream()
+//                .map(itemId -> itemDao.getItemById(itemId)
+//                        .orElseThrow(() -> new ResourceNotFound("Item not found with id: " + itemId)))
+//                .collect(Collectors.toList());
+//
+//        shoppingCart.setItems(items);
+//        ShoppingCart savedCart = shoppingCartDao.saveShoppingCart(shoppingCart);
+//
+//        return convertToDto(savedCart);
+//    }
 
     @Override
     public ResponseShoppingCartDto getShoppingCartById(Long id) {
