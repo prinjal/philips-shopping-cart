@@ -6,7 +6,7 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 
 @Entity
 @Table(
-        name = "ITEM"
+        name = "ITEMS"
 )
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,12 +16,12 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 public class Item {
     @Id
     @SequenceGenerator(
-            name = "item_id_seq",
-            sequenceName = "item_id_seq",
+            name = "items_id_seq",
+            sequenceName = "items_id_seq",
             allocationSize = 1
     )
     @GeneratedValue(
-            generator = "item_id_seq"
+            generator = "items_id_seq"
     )
     private Long id;
 

@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,12 +21,12 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @SequenceGenerator(
-            name = "user_id_seq",
-            sequenceName = "user_id_seq",
+            name = "users_id_seq",
+            sequenceName = "users_id_seq",
             allocationSize = 1
     )
     @GeneratedValue(
-            generator = "user_id_seq"
+            generator = "users_id_seq"
     )
     private Long id;
 
@@ -43,8 +43,8 @@ public class User implements UserDetails {
     @Column(updatable = false)
     private Date createdAt;
 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "shopping_cart_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id")
     private ShoppingCart shoppingCart;
 
     @UpdateTimestamp
