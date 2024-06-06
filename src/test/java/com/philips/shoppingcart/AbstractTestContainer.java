@@ -2,6 +2,7 @@ package com.philips.shoppingcart;
 
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -13,6 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import javax.sql.DataSource;
 
 @Testcontainers
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractTestContainer {
 
     @Container

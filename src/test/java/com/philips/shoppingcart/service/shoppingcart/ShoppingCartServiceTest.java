@@ -1,5 +1,6 @@
 package com.philips.shoppingcart.service.shoppingcart;
 
+import com.philips.shoppingcart.AbstractTestContainer;
 import com.philips.shoppingcart.dao.item.ItemDao;
 import com.philips.shoppingcart.dao.product.ProductDao;
 import com.philips.shoppingcart.dao.shoppingcart.ShoppingCartDao;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.Mockito.*;
 
-class ShoppingCartServiceTest {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class ShoppingCartServiceTest extends AbstractTestContainer {
 
     @Mock
     private ShoppingCartDao shoppingCartDao;
