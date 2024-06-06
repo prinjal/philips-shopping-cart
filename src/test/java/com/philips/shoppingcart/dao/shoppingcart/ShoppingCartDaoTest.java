@@ -1,5 +1,6 @@
 package com.philips.shoppingcart.dao.shoppingcart;
 
+import com.philips.shoppingcart.AbstractTestContainer;
 import com.philips.shoppingcart.dao.shoppingcart.impl.ShoppingCartJpaDataAccessImpl;
 import com.philips.shoppingcart.model.Item;
 import com.philips.shoppingcart.model.Product;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-class ShoppingCartDaoTest {
+class ShoppingCartDaoTest extends AbstractTestContainer {
 
     private ShoppingCartDao testShoppingCartJpaDataAccess;
     private AutoCloseable autoCloseable;
