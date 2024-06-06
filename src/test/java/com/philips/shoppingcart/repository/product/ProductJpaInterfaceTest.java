@@ -1,18 +1,21 @@
-package com.philips.shoppingcart.repository;
+package com.philips.shoppingcart.repository.product;
 
 import com.philips.shoppingcart.AbstractTestContainer;
 import com.philips.shoppingcart.model.Product;
-import org.junit.jupiter.api.BeforeAll;
+import com.philips.shoppingcart.repository.ProductJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ProductJpaInterfaceTest extends AbstractTestContainer {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+class ProductJpaInterfaceTest extends AbstractTestContainer{
 
     @Autowired
     private ProductJpaRepository testProductJpaRepository;

@@ -1,11 +1,14 @@
-package com.philips.shoppingcart.repository;
+package com.philips.shoppingcart.repository.user;
 
 import com.philips.shoppingcart.AbstractTestContainer;
 import com.philips.shoppingcart.model.User;
+import com.philips.shoppingcart.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -13,12 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserJpaInterfaceTest extends AbstractTestContainer {
 
     @Autowired
     private UserRepository testUserRepository;
 
     @Test
+    @Transactional
     void findByEmail() {
         // Given
         User user = new User();
